@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 
 const HeroBanner = () => {
   return (
-    <div className="relative w-full h-[80vh] min-h-[500px] max-h-[800px] overflow-hidden bg-[#FFF6E5]">
+    <div className="relative z-0 w-full h-[80vh] min-h-[500px] max-h-[800px] overflow-hidden bg-[#FFF6E5]">
       {/* Background Image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 ">
         <div className="absolute inset-0 bg-gradient-to-r from-[#FFF6E5] via-transparent to-[#FFF6E5]/90 z-10"></div>
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1556909212-d5b604d0c90d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center"></div>
       </div>

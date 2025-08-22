@@ -124,13 +124,13 @@ const Navbar = () => {
               ) : (
                 <>
                   <a
-                    href="#"
+                    href="/login"
                     className="block px-3 py-3 rounded-md text-base font-medium text-teal-600 hover:bg-teal-50"
                   >
                     Login
                   </a>
                   <a
-                    href="#"
+                    href="register"
                     className="block px-3 py-3 rounded-md text-base font-medium bg-teal-600 text-white hover:bg-teal-700"
                   >
                     Register

@@ -70,7 +70,7 @@ const ChatInterface = () => {
   return (
     <div className="flex flex-col h-screen bg-[#FFF6E5]">
       {/* Header */}
-      <div className="flex items-center p-4 bg-white border-b border-[#F5F5F5]">
+      <div className="flex items-center p-4 bg-white border-b border-[#F5F5F5] mt-16">
         <div className="relative">
           <img 
             src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" 

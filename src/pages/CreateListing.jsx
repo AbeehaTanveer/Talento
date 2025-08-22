@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CreateListingScreen = () => {
   const [listing, setListing] = useState({
@@ -9,10 +10,14 @@ const CreateListingScreen = () => {
     category: '',
     tags: [],
     images: [],
+    videos: [],
     location: ''
   });
 
-  const fileInputRef = useRef(null);
+  const [activePreviewIndex, setActivePreviewIndex] = useState(0);
+  const [mediaType, setMediaType] = useState('image'); // 'image' or 'video'
+  const imageInputRef = useRef(null);
+  const videoInputRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,8 +33,23 @@ const CreateListingScreen = () => {
     }));
   };
 
-  const handleTriggerFileInput = () => {
-    fileInputRef.current.click();
+  const handleVideoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      const videoUrl = URL.createObjectURL(files[0]);
+      setListing(prev => ({ 
+        ...prev, 
+        videos: [...prev.videos, videoUrl].slice(0, 1) // Limit to 1 video
+      }));
+    }
+  };
+
+  const handleTriggerImageInput = () => {
+    imageInputRef.current.click();
+  };
+
+  const handleTriggerVideoInput = () => {
+    videoInputRef.current.click();
   };
 
   const handleTagAdd = (e) => {
@@ -45,16 +65,31 @@ const CreateListingScreen = () => {
 
   const removeImage = (index) => {
     const newImages = [...listing.images];
-    URL.revokeObjectURL(newImages[index]); // Clean up memory
+    URL.revokeObjectURL(newImages[index]);
     newImages.splice(index, 1);
     setListing(prev => ({ ...prev, images: newImages }));
+    if (activePreviewIndex >= newImages.length) {
+      setActivePreviewIndex(Math.max(0, newImages.length - 1));
+    }
+  };
+
+  const removeVideo = (index) => {
+    const newVideos = [...listing.videos];
+    URL.revokeObjectURL(newVideos[index]);
+    newVideos.splice(index, 1);
+    setListing(prev => ({ ...prev, videos: newVideos }));
   };
 
   const handlePublish = () => {
     console.log('Publishing listing:', listing);
-    // Here you would typically send the data to your backend
     alert('Listing published successfully!');
   };
+
+  const allMedia = [...listing.images, ...listing.videos];
+  const mediaTypes = [
+    ...listing.images.map(() => 'image'),
+    ...listing.videos.map(() => 'video')
+  ];
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
@@ -91,9 +126,9 @@ const CreateListingScreen = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
               </svg>
               <div>
-                <h4 className="font-medium text-[#333333]">Safety Reminder</h4>
+                <h4 className="font-medium text-[#333333]">Reminder</h4>
                 <p className="text-sm text-[#333333]/80 mt-1">
-                  Never share personal financial information. Talanto will never ask for your bank details outside secure payment methods.
+                Add a Video can make you standout and increase your chances of selling.
                 </p>
               </div>
             </div>
@@ -165,56 +200,143 @@ const CreateListingScreen = () => {
             </div>
           </section>
 
-          {/* Images Section - Now with proper image display */}
-          <section className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-xl font-semibold text-[#006D77] mb-4">Images</h2>
-            <div className="space-y-4">
-              <div 
-                onClick={handleTriggerFileInput}
-                className="border-2 border-dashed border-[#F5F5F5] rounded-lg p-8 text-center cursor-pointer hover:border-[#006D77]/50 transition-colors"
-              >
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  multiple
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-                <div className="flex flex-col items-center">
-                  <svg className="w-10 h-10 text-[#006D77] mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                  </svg>
-                  <p className="text-sm text-[#333333]">Click to upload images</p>
-                  <p className="text-xs text-[#333333]/60 mt-1">Up to 5 images (JPEG, PNG)</p>
-                </div>
-              </div>
-              
-              {/* Display uploaded images */}
-              {listing.images.length > 0 && (
-                <div className="grid grid-cols-3 gap-3">
-                  {listing.images.map((imageUrl, index) => (
-                    <div key={index} className="relative aspect-square bg-[#F5F5F5] rounded-lg overflow-hidden">
-                      <img 
-                        src={imageUrl} 
-                        alt={`Preview ${index}`}
-                        className="w-full h-full object-cover"
-                      />
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          removeImage(index);
-                        }}
-                        className="absolute top-1 right-1 bg-white rounded-full w-5 h-5 flex items-center justify-center shadow-sm hover:bg-[#FF6F61]/10"
-                      >
-                        ×
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )}
+          {/* Media Section - Combined Images and Videos */}
+      {/* Media Section - Combined Images and Videos */}
+<section className="bg-white rounded-xl shadow-sm p-6 glass-panel">
+  <h2 className="text-xl font-semibold text-[#006D77] mb-4">Media</h2>
+  <div className="space-y-4">
+    <div className="flex space-x-3 mb-4">
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={handleTriggerImageInput}
+        className={`px-4 py-2 rounded-lg border-2 font-medium ${
+          mediaType === 'image' 
+            ? 'bg-[#006D77] text-white border-[#006D77] shadow-md' 
+            : 'bg-white text-[#333333] border-[#e0e0e0] hover:border-[#006D77] hover:text-[#006D77]'
+        } transition-all duration-200`}
+      >
+        <div className="flex items-center">
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          Add Images
+        </div>
+      </motion.button>
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={handleTriggerVideoInput}
+        className={`px-4 py-2 rounded-lg border-2 font-medium ${
+          mediaType === 'video' 
+            ? 'bg-[#006D77] text-white border-[#006D77] shadow-md' 
+            : 'bg-white text-[#333333] border-[#e0e0e0] hover:border-[#006D77] hover:text-[#006D77]'
+        } transition-all duration-200`}
+      >
+        <div className="flex items-center">
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          Add Video
+        </div>
+      </motion.button>
+    </div>
+    
+    <input
+      type="file"
+      ref={imageInputRef}
+      multiple
+      accept="image/*"
+      onChange={handleImageUpload}
+      className="hidden"
+    />
+    <input
+      type="file"
+      ref={videoInputRef}
+      accept="video/*"
+      onChange={handleVideoUpload}
+      className="hidden"
+    />
+    
+    {/* Display uploaded media */}
+    {(listing.images.length > 0 || listing.videos.length > 0) ? (
+      <div className="grid grid-cols-3 gap-4">
+        {listing.images.map((imageUrl, index) => (
+          <motion.div 
+            key={`img-${index}`}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative aspect-square bg-gradient-to-br from-[#F5F5F5] to-[#e0e0e0] rounded-lg overflow-hidden group border border-[#e0e0e0]"
+          >
+            <img 
+              src={imageUrl} 
+              alt={`Preview ${index}`}
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            <div className="absolute top-0 left-0 bg-[#FF6F61] text-white text-xs px-2 py-1 rounded-br-lg font-medium">
+              Image {index + 1}
             </div>
-          </section>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeImage(index);
+              }}
+              className="absolute top-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-[#FF6F61] hover:text-white transition-colors duration-200"
+            >
+              ×
+            </motion.button>
+          </motion.div>
+        ))}
+        
+        {listing.videos.map((videoUrl, index) => (
+          <motion.div 
+            key={`vid-${index}`}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative aspect-square bg-gradient-to-br from-[#F5F5F5] to-[#e0e0e0] rounded-lg overflow-hidden group border border-[#e0e0e0]"
+          >
+            <div className="w-full h-full flex items-center justify-center bg-black bg-opacity-20">
+              <svg className="w-10 h-10 text-white opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="absolute top-0 left-0 bg-[#006D77] text-white text-xs px-2 py-1 rounded-br-lg font-medium">
+              Video
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeVideo(index);
+              }}
+              className="absolute top-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center shadow-md hover:bg-[#FF6F61] hover:text-white transition-colors duration-200"
+            >
+              ×
+            </motion.button>
+          </motion.div>
+        ))}
+      </div>
+    ) : (
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="border-2 border-dashed border-[#e0e0e0] rounded-xl p-8 text-center hover:border-[#006D77] transition-colors duration-300"
+      >
+        <div className="flex flex-col items-center text-[#666]">
+          <svg className="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          <p className="font-medium">No media added yet</p>
+          <p className="text-sm mt-1">Upload images or a video to showcase your item</p>
+        </div>
+      </motion.div>
+    )}
+  </div>
+</section>
 
           {/* Category & Tags Section */}
           <section className="bg-white rounded-xl shadow-sm p-6">
@@ -242,7 +364,12 @@ const CreateListingScreen = () => {
                 <label className="block text-sm font-medium text-[#333333] mb-1">Tags</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {listing.tags.map((tag, index) => (
-                    <div key={index} className="flex items-center bg-[#FFF6E5] px-3 py-1 rounded-full text-sm">
+                    <motion.div 
+                      key={index}
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      className="flex items-center bg-[#FFF6E5] px-3 py-1 rounded-full text-sm"
+                    >
                       {tag}
                       <button
                         onClick={() => removeTag(index)}
@@ -250,7 +377,7 @@ const CreateListingScreen = () => {
                       >
                         ×
                       </button>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
                 <input
@@ -281,15 +408,40 @@ const CreateListingScreen = () => {
           <div className="sticky top-6">
             <div className="bg-white rounded-xl shadow-sm p-6">
               <h2 className="text-xl font-semibold text-[#006D77] mb-4">Listing Preview</h2>
-              <div className="space-y-4">
-                {/* Image Preview - Now shows actual images */}
-                <div className="aspect-square bg-[#F5F5F5] rounded-lg overflow-hidden">
-                  {listing.images.length > 0 ? (
-                    <img 
-                      src={listing.images[0]} 
-                      alt="Main preview" 
-                      className="w-full h-full object-cover"
-                    />
+              
+              {/* Main Preview Area */}
+              <div className="aspect-square bg-[#F5F5F5] rounded-lg overflow-hidden mb-4 relative">
+                <AnimatePresence mode="wait">
+                  {allMedia.length > 0 ? (
+                    <motion.div
+                      key={activePreviewIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="w-full h-full"
+                    >
+                      {mediaTypes[activePreviewIndex] === 'image' ? (
+                        <img 
+                          src={allMedia[activePreviewIndex]} 
+                          alt="Main preview" 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <video 
+                          controls
+                          className="w-full h-full object-cover"
+                        >
+                          <source src={allMedia[activePreviewIndex]} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
+                      <div className="absolute top-0 left-0 bg-[#FF6F61] text-white text-xs px-2 py-1 rounded-br-lg">
+                        {mediaTypes[activePreviewIndex] === 'image' 
+                          ? `Image ${activePreviewIndex + 1}` 
+                          : 'Video'}
+                      </div>
+                    </motion.div>
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-[#333333]/30">
                       <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -297,45 +449,75 @@ const CreateListingScreen = () => {
                       </svg>
                     </div>
                   )}
-                </div>
+                </AnimatePresence>
+              </div>
 
-                {/* Title & Price */}
-                <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-[#333333]">
-                    {listing.title || <span className="text-[#333333]/50">Your listing title will appear here</span>}
-                  </h3>
-                  {listing.price ? (
-                    <p className="text-xl font-bold text-[#FF6F61]">
-                      {listing.currency} {listing.price}
-                    </p>
-                  ) : (
-                    <p className="text-[#333333]/50">Price will appear here</p>
+              {/* Media Thumbnail Scroller */}
+              {allMedia.length > 1 && (
+                <div className="flex space-x-2 overflow-x-auto pb-2 mb-4">
+                  {allMedia.map((media, index) => (
+                    <div
+                      key={index}
+                      onClick={() => setActivePreviewIndex(index)}
+                      className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden cursor-pointer border-2 ${
+                        index === activePreviewIndex ? 'border-[#FF6F61]' : 'border-transparent'
+                      }`}
+                    >
+                      {mediaTypes[index] === 'image' ? (
+                        <img 
+                          src={media} 
+                          alt={`Thumbnail ${index}`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-[#006D77] flex items-center justify-center">
+                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Title & Price */}
+              <div className="space-y-2 mb-4">
+                <h3 className="text-lg font-semibold text-[#333333]">
+                  {listing.title || <span className="text-[#333333]/50">Your listing title will appear here</span>}
+                </h3>
+                {listing.price ? (
+                  <p className="text-xl font-bold text-[#FF6F61]">
+                    {listing.currency} {listing.price}
+                  </p>
+                ) : (
+                  <p className="text-[#333333]/50">Price will appear here</p>
+                )}
+              </div>
+
+              {/* Description Preview */}
+              <div className="text-sm text-[#333333] mb-4">
+                {listing.description ? (
+                  <p className="line-clamp-3">{listing.description}</p>
+                ) : (
+                  <p className="text-[#333333]/50">Listing description will appear here</p>
+                )}
+              </div>
+
+              {/* Category & Tags Preview */}
+              <div className="pt-4 border-t border-[#F5F5F5]">
+                <div className="flex flex-wrap gap-2">
+                  {listing.category && (
+                    <span className="bg-[#006D77]/10 text-[#006D77] px-3 py-1 rounded-full text-sm">
+                      {listing.category}
+                    </span>
                   )}
-                </div>
-
-                {/* Description Preview */}
-                <div className="text-sm text-[#333333]">
-                  {listing.description ? (
-                    <p className="line-clamp-3">{listing.description}</p>
-                  ) : (
-                    <p className="text-[#333333]/50">Listing description will appear here</p>
-                  )}
-                </div>
-
-                {/* Category & Tags Preview */}
-                <div className="pt-4 border-t border-[#F5F5F5]">
-                  <div className="flex flex-wrap gap-2">
-                    {listing.category && (
-                      <span className="bg-[#006D77]/10 text-[#006D77] px-3 py-1 rounded-full text-sm">
-                        {listing.category}
-                      </span>
-                    )}
-                    {listing.tags.map((tag, index) => (
-                      <span key={index} className="bg-[#FFF6E5] text-[#333333] px-3 py-1 rounded-full text-sm">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  {listing.tags.map((tag, index) => (
+                    <span key={index} className="bg-[#FFF6E5] text-[#333333] px-3 py-1 rounded-full text-sm">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
