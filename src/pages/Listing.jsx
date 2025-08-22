@@ -100,12 +100,8 @@ const TalantoListings = () => {
   const [sortBy, setSortBy] = useState('relevance');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []); // runs once on mount
 
 
 
@@ -122,6 +118,7 @@ const TalantoListings = () => {
   }, []);
 
 
+  
   
 
   // Handle filter changes
@@ -195,58 +192,42 @@ const TalantoListings = () => {
       <span className="ml-2 text-gray-500">({listings.length} results)</span>
     </div>
 
-    {/* Controls */}
-    <div className="flex items-center gap-3 w-full md:w-auto">
-      {/* Mobile Filter Button */}
-      {isMobile && (
-        <button
-          onClick={() => setIsFilterOpen(true)}
-          className="flex items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
-          </svg>
-          <span>Filters</span>
-          {Object.keys(activeFilters).length > 0 && (
-            <span className="bg-[#FF6F61] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              {Object.keys(activeFilters).length}
-            </span>
-          )}
-        </button>
-      )}
+{/* Controls */}
+<div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 w-full md:w-auto">
+  {/* Search Bar */}
+  <div className="relative flex-1">
+    <input
+      type="text"
+      value={searchQuery}
+      onChange={(e) => setSearchQuery(e.target.value)}
+      placeholder="Search products, services..."
+      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 pr-10 text-sm shadow-sm focus:border-[#FF6F61] focus:ring-2 focus:ring-[#FF6F61] focus:outline-none"
+    />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+    </svg>
+  </div>
 
-      {/* Search Bar */}
-      <div className="relative flex-1 md:w-64">
-        <input
-          type="text"
-          value={''}
-          placeholder="Search products, services..."
-          className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 pr-10 text-sm shadow-sm focus:border-[#FF6F61] focus:ring-2 focus:ring-[#FF6F61] focus:outline-none"
-        />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
-        </svg>
-      </div>
+  {/* Sort Dropdown */}
+  <select
+    className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm focus:border-[#FF6F61] focus:ring-2 focus:ring-[#FF6F61] focus:outline-none"
+    value={sortBy}
+    onChange={(e) => setSortBy(e.target.value)}
+  >
+    <option value="relevance">Relevance</option>
+    <option value="newest">Newest</option>
+    <option value="price_asc">Price: Low to High</option>
+    <option value="price_desc">Price: High to Low</option>
+    <option value="rating">Top Rated</option>
+  </select>
+</div>
 
-      {/* Sort Dropdown */}
-      <select
-        className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm focus:border-[#FF6F61] focus:ring-2 focus:ring-[#FF6F61] focus:outline-none"
-        value={sortBy}
-        onChange={(e) => setSortBy(e.target.value)}
-      >
-        <option value="relevance">Relevance</option>
-        <option value="newest">Newest</option>
-        <option value="price_asc">Price: Low to High</option>
-        <option value="price_desc">Price: High to Low</option>
-        <option value="rating">Top Rated</option>
-      </select>
-    </div>
   </div>
 
   <div className="flex">
@@ -322,134 +303,172 @@ const TalantoListings = () => {
       </div>
     ) : (
       // Mobile filter modal - Bottom sheet style
-      <AnimatePresence>
-        {isFilterOpen && (
-          <>
-            {/* Semi-transparent overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-30 z-40"
-              onClick={() => setIsFilterOpen(false)}
-            />
-            
-            {/* Filter panel */}
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl z-50 shadow-lg max-h-[85vh] overflow-hidden"
+ <AnimatePresence>
+  {isFilterOpen && (
+    <>
+      {/* Overlay */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+        onClick={() => setIsFilterOpen(false)}
+      />
+
+      {/* Filter Bottom Sheet */}
+      <motion.div
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
+        className="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl z-50 shadow-xl max-h-[70vh] flex flex-col"
+      >
+        {/* Drag Handle */}
+        <div className="flex justify-center py-3">
+          <div className="w-12 h-1.5 bg-gray-300 rounded-full"></div>
+        </div>
+
+        {/* Header */}
+        <div className="flex justify-between items-center px-6 pb-3 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-800">Filters</h2>
+          <button
+            onClick={() => setIsFilterOpen(false)}
+            className="p-2 rounded-full hover:bg-gray-100"
+          >
+            <svg
+              className="w-6 h-6 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              {/* Drag handle */}
-              <div className="flex justify-center py-3">
-                <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
-              </div>
-              
-              <div className="px-5 pb-5 overflow-y-auto max-h-[calc(85vh-50px)]">
-                <div className="flex justify-between items-center mb-5 sticky top-0 bg-white py-3">
-                  <h2 className="text-xl font-semibold text-teal">Filters</h2>
-                  <button 
-                    onClick={() => setIsFilterOpen(false)}
-                    className="p-1 rounded-full hover:bg-gray-100"
-                  >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                  </button>
-                </div>
-                
-                {/* Filter tabs with icons */}
-                <div className="flex overflow-x-auto pb-3 mb-4 -mx-2 px-2">
-                  <button className="flex flex-col items-center px-4 py-2 rounded-lg bg-teal bg-opacity-10 text-teal font-medium whitespace-nowrap mx-1">
-                    <svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                    <span className="text-xs">Category</span>
-                  </button>
-                  <button className="flex flex-col items-center px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 whitespace-nowrap mx-1">
-                    <svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-xs">Condition</span>
-                  </button>
-                  <button className="flex flex-col items-center px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 whitespace-nowrap mx-1">
-                    <svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-xs">Price</span>
-                  </button>
-                  <button className="flex flex-col items-center px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 whitespace-nowrap mx-1">
-                    <svg className="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span className="text-xs">Seller</span>
-                  </button>
-                </div>
-                
-                <FilterSection title="Category" icon={
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                  </svg>
-                }>
-                  <div className="space-y-2">
-                    {filterOptions.categories.map(category => (
-                      <label key={category} className="flex items-center py-2">
-                        <input
-                          type="checkbox"
-                          className="rounded border-gray-300 text-coral focus:ring-coral"
-                          checked={activeFilters.category?.includes(category) || false}
-                          onChange={() => handleFilterChange('category', category)}
-                        />
-                        <span className="ml-3 text-sm">{category}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FilterSection>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
 
-                <FilterSection title="Condition" icon={
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                }>
-                  <div className="space-y-2">
-                    {filterOptions.conditions.map(condition => (
-                      <label key={condition} className="flex items-center py-2">
-                        <input
-                          type="checkbox"
-                          className="rounded border-gray-300 text-coral focus:ring-coral"
-                          checked={activeFilters.condition?.includes(condition) || false}
-                          onChange={() => handleFilterChange('condition', condition)}
-                        />
-                        <span className="ml-3 text-sm">{condition}</span>
-                      </label>
-                    ))}
-                  </div>
-                </FilterSection>
+    
 
-                <div className="sticky bottom-0 bg-white pt-4 pb-2 border-t border-gray-200 mt-6">
-                  <div className="flex gap-3">
-                    <button 
-                      onClick={clearAllFilters}
-                      className="flex-1 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg"
-                    >
-                      Clear All
-                    </button>
-                    <button 
-                      onClick={() => setIsFilterOpen(false)}
-                      className="flex-1 bg-coral text-white py-3 font-medium rounded-lg"
-                    >
-                      Apply Filters
-                    </button>
-                  </div>
-                </div>
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <FilterSection
+            title="Category"
+            icon={
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            }
+          >
+            <div className="space-y-2">
+              {filterOptions.categories.map((category) => (
+                <label key={category} className="flex items-center py-2">
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                    checked={activeFilters.category?.includes(category) || false}
+                    onChange={() => handleFilterChange("category", category)}
+                  />
+                  <span className="ml-3 text-sm text-gray-700">{category}</span>
+                </label>
+              ))}
+            </div>
+          </FilterSection>
+
+          <FilterSection
+            title="Condition"
+            icon={
+              <svg
+                className="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9..." />
+              </svg>
+            }
+          >
+            <div className="space-y-2">
+              {filterOptions.conditions.map((condition) => (
+                <label key={condition} className="flex items-center py-2">
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-teal-600 focus:ring-teal-500"
+                    checked={activeFilters.condition?.includes(condition) || false}
+                    onChange={() => handleFilterChange("condition", condition)}
+                  />
+                  <span className="ml-3 text-sm text-gray-700">{condition}</span>
+                </label>
+              ))}
+            </div>
+          </FilterSection>
+
+
+       <FilterSection title="Price Range">
+            <div className="pt-2">
+              <input
+                type="range"
+                min="0"
+                max="1000"
+                className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-coral"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>$0</span>
+                <span>$1000+</span>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+            </div>
+          </FilterSection>
+                 <FilterSection title="Seller Type">
+            <div className="space-y-2">
+              {filterOptions.sellerTypes.map(type => (
+                <label key={type} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    className="rounded border-gray-300 text-coral focus:ring-coral"
+                    checked={activeFilters.sellerType?.includes(type) || false}
+                    onChange={() => handleFilterChange('sellerType', type)}
+                  />
+                  <span className="ml-2 text-sm">{type}</span>
+                </label>
+              ))}
+            </div>
+          </FilterSection>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-gray-200 bg-white">
+          <div className="flex gap-3">
+            <button
+              onClick={clearAllFilters}
+              className="flex-1 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50"
+            >
+              Clear All
+            </button>
+            <button
+              onClick={() => setIsFilterOpen(false)}
+              className="flex-1 bg-teal-600 text-white py-3 font-medium rounded-xl shadow-sm hover:bg-teal-700"
+            >
+              Apply Filters
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </>
+  )}
+</AnimatePresence>
+
     )}
+
+
+
 
     {/* Main content area */}
     <div className="flex-1 p-4">
@@ -543,6 +562,32 @@ const TalantoListings = () => {
           </motion.div>
         ))}
       </motion.div>
+
+{/* Floating Filter Button (only show when modal is closed) */}
+{isMobile && !isFilterOpen && (
+  <button
+    onClick={() => setIsFilterOpen(true)}
+    className="fixed bottom-4 left-4 right-4 w-[calc(100%-2rem)] flex items-center justify-center gap-2 
+               bg-gradient-to-r from-[#FF6F61] to-[#ff8364] text-white py-4 font-semibold 
+               shadow-xl z-50 rounded-2xl transition active:scale-95"
+  >
+    <svg
+      className="w-5 h-5"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M3 4h18M6 8h12M10 12h4"
+      />
+    </svg>
+    Filters
+  </button>
+)}
+
 
       {/* Pagination */}
       <div className="flex justify-center mt-8">

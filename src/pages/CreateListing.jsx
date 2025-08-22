@@ -92,33 +92,12 @@ const CreateListingScreen = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center">
-        <div className="flex items-center">
-          <div className="w-10 h-10 rounded-lg bg-[#006D77] flex items-center justify-center text-white font-bold text-xl mr-3">
-            T
-          </div>
-          <span className="text-xl font-semibold text-[#333333]">Talanto</span>
-        </div>
-        <div className="flex space-x-3">
-          <button className="px-6 py-2 border border-[#006D77] text-[#006D77] rounded-lg hover:bg-[#006D77]/10 transition-colors">
-            Save Draft
-          </button>
-          <button 
-            onClick={handlePublish}
-            className="px-6 py-2 bg-[#FF6F61] text-white rounded-lg hover:bg-[#FF6F61]/90 transition-colors"
-            disabled={!listing.title || !listing.description || !listing.price || !listing.category}
-          >
-            Publish
-          </button>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-[#F5F5F5] flex flex-col mt-16">
+ 
       {/* Main Content */}
-      <main className="flex flex-1 p-6 gap-6">
+    <main className="flex flex-col lg:flex-row flex-1 p-6 gap-6">
         {/* Left Column - Form (70%) */}
-        <div className="w-full lg:w-7/12 space-y-6">
+    <div className="w-full lg:w-7/12 space-y-6">
           {/* Security Alert */}
           <div className="bg-[#FFF6E5] border-l-4 border-[#FF6F61] p-4 rounded-lg shadow-sm">
             <div className="flex items-start">
@@ -200,7 +179,7 @@ const CreateListingScreen = () => {
             </div>
           </section>
 
-          {/* Media Section - Combined Images and Videos */}
+  
       {/* Media Section - Combined Images and Videos */}
 <section className="bg-white rounded-xl shadow-sm p-6 glass-panel">
   <h2 className="text-xl font-semibold text-[#006D77] mb-4">Media</h2>
@@ -391,150 +370,186 @@ const CreateListingScreen = () => {
             </div>
           </section>
 
-          {/* Sticky Publish Button for Mobile */}
-          <div className="lg:hidden sticky bottom-4 bg-white p-4 rounded-xl shadow-lg border border-[#F5F5F5]">
-            <button 
-              onClick={handlePublish}
-              className="w-full py-3 bg-[#FF6F61] text-white rounded-lg font-medium hover:bg-[#FF6F61]/90 transition-colors"
-              disabled={!listing.title || !listing.description || !listing.price || !listing.category}
-            >
-              Publish Listing
-            </button>
-          </div>
+  
         </div>
 
-        {/* Right Column - Preview (30%) */}
-        <div className="hidden lg:block lg:w-5/12">
-          <div className="sticky top-6">
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h2 className="text-xl font-semibold text-[#006D77] mb-4">Listing Preview</h2>
-              
-              {/* Main Preview Area */}
-              <div className="aspect-square bg-[#F5F5F5] rounded-lg overflow-hidden mb-4 relative">
-                <AnimatePresence mode="wait">
-                  {allMedia.length > 0 ? (
-                    <motion.div
-                      key={activePreviewIndex}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="w-full h-full"
-                    >
-                      {mediaTypes[activePreviewIndex] === 'image' ? (
-                        <img 
-                          src={allMedia[activePreviewIndex]} 
-                          alt="Main preview" 
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <video 
-                          controls
-                          className="w-full h-full object-cover"
-                        >
-                          <source src={allMedia[activePreviewIndex]} type="video/mp4" />
-                          Your browser does not support the video tag.
-                        </video>
-                      )}
-                      <div className="absolute top-0 left-0 bg-[#FF6F61] text-white text-xs px-2 py-1 rounded-br-lg">
-                        {mediaTypes[activePreviewIndex] === 'image' 
-                          ? `Image ${activePreviewIndex + 1}` 
-                          : 'Video'}
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-[#333333]/30">
-                      <svg className="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                      </svg>
-                    </div>
-                  )}
-                </AnimatePresence>
-              </div>
+   
+  {/* Right Column - Preview (30%) */}
+  <div className="w-full lg:w-5/12">
+   {/* Separation for mobile */}
+  <div className="block lg:hidden my-8 border-t border-[#e0e0e0] pt-6">
+    <h2 className="text-lg font-semibold text-[#006D77] mb-4 text-center">
+      Live Preview
+    </h2>
+  </div>
+    <div className="sticky top-6">
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h2 className="text-xl font-semibold text-[#006D77] mb-4">Listing Preview</h2>
 
-              {/* Media Thumbnail Scroller */}
-              {allMedia.length > 1 && (
-                <div className="flex space-x-2 overflow-x-auto pb-2 mb-4">
-                  {allMedia.map((media, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setActivePreviewIndex(index)}
-                      className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden cursor-pointer border-2 ${
-                        index === activePreviewIndex ? 'border-[#FF6F61]' : 'border-transparent'
-                      }`}
-                    >
-                      {mediaTypes[index] === 'image' ? (
-                        <img 
-                          src={media} 
-                          alt={`Thumbnail ${index}`}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-[#006D77] flex items-center justify-center">
-                          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Title & Price */}
-              <div className="space-y-2 mb-4">
-                <h3 className="text-lg font-semibold text-[#333333]">
-                  {listing.title || <span className="text-[#333333]/50">Your listing title will appear here</span>}
-                </h3>
-                {listing.price ? (
-                  <p className="text-xl font-bold text-[#FF6F61]">
-                    {listing.currency} {listing.price}
-                  </p>
-                ) : (
-                  <p className="text-[#333333]/50">Price will appear here</p>
-                )}
-              </div>
-
-              {/* Description Preview */}
-              <div className="text-sm text-[#333333] mb-4">
-                {listing.description ? (
-                  <p className="line-clamp-3">{listing.description}</p>
-                ) : (
-                  <p className="text-[#333333]/50">Listing description will appear here</p>
-                )}
-              </div>
-
-              {/* Category & Tags Preview */}
-              <div className="pt-4 border-t border-[#F5F5F5]">
-                <div className="flex flex-wrap gap-2">
-                  {listing.category && (
-                    <span className="bg-[#006D77]/10 text-[#006D77] px-3 py-1 rounded-full text-sm">
-                      {listing.category}
-                    </span>
-                  )}
-                  {listing.tags.map((tag, index) => (
-                    <span key={index} className="bg-[#FFF6E5] text-[#333333] px-3 py-1 rounded-full text-sm">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Publish Button for Desktop */}
-            <div className="mt-4 bg-white p-4 rounded-xl shadow-sm border border-[#F5F5F5]">
-              <button 
-                onClick={handlePublish}
-                className="w-full py-3 bg-[#FF6F61] text-white rounded-lg font-medium hover:bg-[#FF6F61]/90 transition-colors"
-                disabled={!listing.title || !listing.description || !listing.price || !listing.category}
+        {/* Main Preview Area */}
+        <div className="aspect-square bg-[#F5F5F5] rounded-lg overflow-hidden mb-4 relative">
+          <AnimatePresence mode="wait">
+            {allMedia.length > 0 ? (
+              <motion.div
+                key={activePreviewIndex}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="w-full h-full"
               >
-                Publish Listing
-              </button>
-            </div>
+                {mediaTypes[activePreviewIndex] === "image" ? (
+                  <img
+                    src={allMedia[activePreviewIndex]}
+                    alt="Main preview"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <video controls className="w-full h-full object-cover">
+                    <source src={allMedia[activePreviewIndex]} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                )}
+                <div className="absolute top-0 left-0 bg-[#FF6F61] text-white text-xs px-2 py-1 rounded-br-lg">
+                  {mediaTypes[activePreviewIndex] === "image"
+                    ? `Image ${activePreviewIndex + 1}`
+                    : "Video"}
+                </div>
+              </motion.div>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-[#333333]/30">
+                <svg
+                  className="w-16 h-16"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1"
+                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Media Thumbnail Scroller */}
+        {allMedia.length > 1 && (
+          <div className="flex space-x-2 overflow-x-auto pb-2 mb-4">
+            {allMedia.map((media, index) => (
+              <div
+                key={index}
+                onClick={() => setActivePreviewIndex(index)}
+                className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden cursor-pointer border-2 ${
+                  index === activePreviewIndex
+                    ? "border-[#FF6F61]"
+                    : "border-transparent"
+                }`}
+              >
+                {mediaTypes[index] === "image" ? (
+                  <img
+                    src={media}
+                    alt={`Thumbnail ${index}`}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#006D77] flex items-center justify-center">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                      ></path>
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      ></path>
+                    </svg>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Title & Price */}
+        <div className="space-y-2 mb-4">
+          <h3 className="text-lg font-semibold text-[#333333]">
+            {listing.title || (
+              <span className="text-[#333333]/50">
+                Your listing title will appear here
+              </span>
+            )}
+          </h3>
+          {listing.price ? (
+            <p className="text-xl font-bold text-[#FF6F61]">
+              {listing.currency} {listing.price}
+            </p>
+          ) : (
+            <p className="text-[#333333]/50">Price will appear here</p>
+          )}
+        </div>
+
+        {/* Description Preview */}
+        <div className="text-sm text-[#333333] mb-4">
+          {listing.description ? (
+            <p className="line-clamp-3">{listing.description}</p>
+          ) : (
+            <p className="text-[#333333]/50">
+              Listing description will appear here
+            </p>
+          )}
+        </div>
+
+        {/* Category & Tags Preview */}
+        <div className="pt-4 border-t border-[#F5F5F5]">
+          <div className="flex flex-wrap gap-2">
+            {listing.category && (
+              <span className="bg-[#006D77]/10 text-[#006D77] px-3 py-1 rounded-full text-sm">
+                {listing.category}
+              </span>
+            )}
+            {listing.tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-[#FFF6E5] text-[#333333] px-3 py-1 rounded-full text-sm"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* Publish Button (both mobile + desktop) */}
+      <div className="mt-4 bg-white p-4 rounded-xl shadow-sm border border-[#F5F5F5]">
+        <button
+          onClick={handlePublish}
+          className="w-full py-3 bg-[#FF6F61] text-white rounded-lg font-medium hover:bg-[#FF6F61]/90 transition-colors"
+          disabled={
+            !listing.title ||
+            !listing.description ||
+            !listing.price ||
+            !listing.category
+          }
+        >
+          Publish Listing
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
 
       {/* Footer */}
       <footer className="bg-white border-t border-[#F5F5F5] py-4 px-6">
