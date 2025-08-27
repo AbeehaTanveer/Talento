@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FiHeart, FiMapPin, FiUser, FiMessageSquare, FiChevronLeft, FiChevronRight, FiStar, FiCalendar, FiShoppingBag } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { Link, Links } from 'react-router-dom';
+import PublicQA from './PublicQA';
 
 const ListingDetailsPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -260,6 +261,18 @@ Features:
             <p className="text-[#333333]/70">No reviews yet. Be the first to review!</p>
           )}
         </motion.div>
+
+
+
+{/* Public Q&A Section */}
+<PublicQA 
+  questions={[
+    { id: 1, user: "Ali Khan", question: "Is this item available in different colors?", answer: "Yes, we currently have it in red, blue, and black." },
+    { id: 2, user: "Sara Ahmed", question: "Does it come with warranty?", answer: "Yes, a 6-month seller warranty is included." },
+    { id: 3, user: "John Doe", question: "How long is the delivery time?", answer: "" }, // unanswered
+  ]}
+/>
+
 
         {/* Similar Listings */}
         <motion.div 

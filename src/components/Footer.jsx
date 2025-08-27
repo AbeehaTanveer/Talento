@@ -21,7 +21,7 @@ const Footer = () => {
             </p>
             <div className="pt-4">
               <p className="text-xs text-white/60">
-                © {new Date().getFullYear()} Market2045. All rights reserved.
+                © {new Date().getFullYear()} Talento. All rights reserved.
               </p>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FiMenu, FiX, FiUser, FiHeart, FiMessageSquare, FiGrid, FiHome } from 'react-icons/fi';
-import { Link } from 'react-router-dom';  
+import { Link, NavLink } from 'react-router-dom';  
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Auth state
@@ -16,11 +16,11 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home', icon: <FiHome className="w-5 h-5" /> },
+    { name: 'home', icon: <FiHome className="w-5 h-5" /> },
     { name: 'Categories', icon: <FiGrid className="w-5 h-5" /> },
     { name: 'Listings', icon: <FiGrid className="w-5 h-5" /> },
     { name: 'Favorites', icon: <FiHeart className="w-5 h-5" /> },
-    { name: 'Chat', icon: <FiMessageSquare className="w-5 h-5" /> },
+    { name: 'Chats', icon: <FiMessageSquare className="w-5 h-5" /> },
   ];
 
   return (
@@ -38,23 +38,25 @@ const Navbar = () => {
               </span>
             </a>
           </div>
-<Link to="/favorites" className="no-underline text-inherit">
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href="#"
-                className="text-[#333333] hover:text-teal-600 transition-colors duration-200 flex items-center space-x-1.5 text-sm font-medium"
-              >
-                <span className="text-teal-600">{item.icon}</span>
-                <span>{item.name}</span>
-              </a>
-            ))}
 
-          </nav>
-          </Link>
+    <nav className="hidden md:flex space-x-8">
+  {navItems.map((item) => (
+    <NavLink
+      key={item.name}
+      to={`/${item.name.toLowerCase()}`}
+      className={({ isActive }) =>
+        `no-underline text-[#333333] hover:text-teal-600 transition-colors duration-200 flex items-center space-x-1.5 text-sm font-medium ${
+          isActive ? 'text-teal-600 font-semibold' : ''
+        }`
+      }
+    >
+      <span className="text-teal-600">{item.icon}</span>
+      <span>{item.name}</span>
+    </NavLink>
+  ))}
+</nav>
+          
 
           {/* Auth Section */}
           <div className="hidden md:flex items-center space-x-4">
@@ -95,46 +97,64 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
-      {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
+  {isMobileMenuOpen && (
         <div className="md:hidden bg-white shadow-lg rounded-b-lg">
           <div className="px-2 pt-2 pb-4 space-y-1">
             {navItems.map((item) => (
-              <a
+              <NavLink
                 key={item.name}
-                href="#"
-                className="block px-3 py-3 rounded-md text-base font-medium text-[#333333] hover:bg-teal-50 hover:text-teal-600 flex items-center space-x-3"
+                to={`/${item.name.toLowerCase()}`}
+                className={({ isActive }) =>
+                  `block px-3 py-3 rounded-md text-base font-medium text-[#333333] hover:bg-teal-50 hover:text-teal-600 flex items-center space-x-3 ${
+                    isActive ? 'bg-teal-50 text-teal-600 font-semibold' : ''
+                  }`
+                }
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span className="text-teal-600">{item.icon}</span>
                 <span>{item.name}</span>
-              </a>
+              </NavLink>
             ))}
             <div className="border-t border-gray-200 pt-2 mt-2">
               {isLoggedIn ? (
-                <a
-                  href="#"
-                  className="block px-3 py-3 rounded-md text-base font-medium text-[#333333] hover:bg-teal-50 hover:text-teal-600 flex items-center space-x-3"
+                <NavLink
+                  to="/account"
+                  className={({ isActive }) =>
+                    `px-3 py-3 rounded-md text-base font-medium text-[#333333] hover:bg-teal-50 hover:text-teal-600 flex items-center space-x-3 ${
+                      isActive ? 'bg-teal-50 text-teal-600 font-semibold' : ''
+                    }`
+                  }
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white">
                     <FiUser className="w-4 h-4" />
                   </div>
                   <span>My Account</span>
-                </a>
+                </NavLink>
               ) : (
                 <>
-                  <a
-                    href="/login"
-                    className="block px-3 py-3 rounded-md text-base font-medium text-teal-600 hover:bg-teal-50"
+                  <NavLink
+                    to="/login"
+                    className={({ isActive }) =>
+                      `block px-3 py-3 rounded-md text-base font-medium text-teal-600 hover:bg-teal-50 ${
+                        isActive ? 'bg-teal-50 text-teal-600 font-semibold' : ''
+                      }`
+                    }
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Login
-                  </a>
-                  <a
-                    href="register"
-                    className="block px-3 py-3 rounded-md text-base font-medium bg-teal-600 text-white hover:bg-teal-700"
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    className={({ isActive }) =>
+                      `block px-3 py-3 rounded-md text-base font-medium bg-teal-600 text-white hover:bg-teal-700 ${
+                        isActive ? 'bg-teal-700' : ''
+                      }`
+                    }
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Register
-                  </a>
+                  </NavLink>
                 </>
               )}
             </div>

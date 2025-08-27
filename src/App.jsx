@@ -19,6 +19,11 @@ import Chat from "./pages/Chat";
 import BoostListings from "./pages/BoostListings";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollTop";
+import TagsPage from "./pages/TagsPage";
+import ReviewPage from "./pages/ReviewPage";
+import ChatList from "./pages/Chatlist";
+import PendingBuyer from "./pages/PendingBuyer";
+import Pendingseller from "./pages/PendingSeller";
 
 function App() {
   return (
@@ -31,6 +36,7 @@ function App() {
         <main className="flex-1 p-4">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/listings" element={<Listing />} />
@@ -42,6 +48,15 @@ function App() {
             <Route path="/favorites" element={<Favorites />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/boost" element={<BoostListings />} />
+            <Route path="/tags" element={<TagsPage />} />
+            <Route path="/review" element={<ReviewPage />} />
+            <Route path="/pendingbuyer" element={<PendingBuyer />} />
+            <Route path="/pendingseller" element={<Pendingseller />} />
+
+ 
+            <Route path="/chats" element={<ChatList />} />
+
+
 
             <Route path="*" element={<NotFound />} />
           </Routes>
