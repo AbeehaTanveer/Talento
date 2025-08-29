@@ -3,17 +3,20 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FiClock, FiAward, FiHelpCircle, FiRefreshCw, FiShare2, FiArrowLeft } from 'react-icons/fi';
 
 const RiddleWordGame = () => {
-  const riddles = [
-    { id: 1, question: "What has keys but can't open locks?", answer: "PIANO", difficulty: "easy" },
-    { id: 2, question: "What gets wet while drying?", answer: "TOWEL", difficulty: "medium" },
-    { id: 3, question: "What has a head, a tail, but no body?", answer: "COINS", difficulty: "medium" },
-    { id: 4, question: "The more you take, the more you leave behind. What am I?", answer: "STEPS", difficulty: "hard" },
-  { id: 5, question: "What is full of holes but still holds water?", answer: "SPONGE", difficulty: "easy" },
-  { id: 6, question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", answer: "MAPS", difficulty: "medium" },
-  { id: 7, question: "What is always in front of you but can’t be seen?", answer: "FUTURE", difficulty: "hard" },
-  { id: 8, question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "ECHO", difficulty: "medium" },
-  { id: 9, question: "I am taken from a mine and shut up in a wooden case, from which I am never released, and yet I am used by almost everyone. What am I?", answer: "PENCIL", difficulty: "hard" }
-  ];
+const riddles = [
+  { id: 1, question: "What has keys but can't open locks?", answer: "PIANO", difficulty: "easy" },
+  { id: 2, question: "What gets wetter as it dries?", answer: "TOWEL", difficulty: "medium" },
+  { id: 3, question: "What has a head, a tail, but no body?", answer: "COINS", difficulty: "medium" },
+  { id: 4, question: "The more you take, the more you leave behind. What am I?", answer: "STEPS", difficulty: "hard" },
+  { id: 5, question: "I fly without wings, I cry without eyes. What am I?", answer: "CLOUD", difficulty: "medium" },
+  { id: 6, question: "I have hands but cannot clap. What am I?", answer: "CLOCK", difficulty: "easy" },
+  { id: 7, question: "I go up but never come down. What am I?", answer: "AGEES", difficulty: "hard" }, // "AGEES" not correct?
+  { id: 7, question: "I go up but never come down. What am I?", answer: "YEARS", difficulty: "hard" },
+  { id: 8, question: "I’m round and bright, I shine at night. What am I?", answer: "MOONS", difficulty: "easy" },
+  { id: 9, question: "I run but never walk, I murmur but never talk. What am I?", answer: "RIVER", difficulty: "medium" },
+  { id: 10, question: "I’m not alive, but I grow. I don’t have lungs, but I need air. What am I?", answer: "FIRES", difficulty: "hard" }
+];
+
 
   const [currentRiddle, setCurrentRiddle] = useState(0);
   const [guesses, setGuesses] = useState(Array(5).fill(''));
@@ -230,6 +233,7 @@ return (
             </motion.div>
           )}
         </AnimatePresence>
+        
 
         {/* Eliminated Letters */}
         {eliminatedLetters.size > 0 && (
@@ -287,22 +291,48 @@ return (
         </motion.div>
       )
     ))}
+
+
     
-    {/* Current guess */}
-    {gameStatus === 'playing' && (
-      <div className="flex gap-2 justify-between w-full">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <span
-            key={index}
-            className="text-2xl font-bold p-2 text-center border-b-2 border-[#FF6F61] flex-1"
-          >
-            {currentGuess[index] || ''}
-          </span>
-        ))}
-      </div>
-    )}
+ {/* Current guess */}
+{gameStatus === 'playing' && (
+  <div 
+    className="flex gap-2 justify-between w-full cursor-text"
+    onClick={() => document.querySelector('input[type="text"]').focus()}
+  >
+    {Array.from({ length: 5 }).map((_, index) => (
+      <span
+        key={index}
+        className="text-2xl font-bold p-2 text-center border-b-2 border-[#FF6F61] flex-1"
+      >
+        {currentGuess[index] || ''}
+      </span>
+    ))}
+  </div>
+)}
+
   </div>
 </div>
+
+{/* Hidden input for mobile typing */}
+<input
+  type="text"
+  value={currentGuess}
+  onChange={(e) => {
+    const val = e.target.value.toUpperCase().replace(/[^A-Z]/g, '');
+    if (val.length <= 5) setCurrentGuess(val);
+  }}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' && currentGuess.length === 5) {
+      const newGuesses = [...guesses];
+      newGuesses[guesses.findIndex(val => val === '')] = currentGuess;
+      setGuesses(newGuesses);
+      setCurrentGuess('');
+    }
+  }}
+  className="absolute opacity-0 pointer-events-none"
+/>
+
 
         {/* Game Status */}
         {gameStatus !== 'playing' && (
