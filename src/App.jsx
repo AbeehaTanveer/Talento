@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 // components
 import Navbar from "./components/Navbar";
@@ -24,46 +24,53 @@ import ReviewPage from "./pages/ReviewPage";
 import ChatList from "./pages/Chatlist";
 import PendingBuyer from "./pages/PendingBuyer";
 import Pendingseller from "./pages/PendingSeller";
+import GamingPage from "./pages/GamingPage";
+import BuyerProfilePage from "./pages/BuyerProfile";
+
+// ✅ Wrapper so we can use useLocation inside
+function Layout() {
+  const location = useLocation();
+  const hideLayout = location.pathname === "/trivia"; // Hide navbar + footer on trivia page
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {!hideLayout && <Navbar />}
+
+      <main className="flex-1 p-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/listings" element={<Listing />} />
+          <Route path="/listingdetails" element={<ListingDetails />} />
+          <Route path="/create-listing" element={<CreateListing />} />
+          <Route path="/edit-listing/:id" element={<EditListing />} />
+          <Route path="/seller" element={<SellerProfile />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/boost" element={<BoostListings />} />
+          <Route path="/tags" element={<TagsPage />} />
+          <Route path="/review" element={<ReviewPage />} />
+          <Route path="/pendingbuyer" element={<PendingBuyer />} />
+          <Route path="/pendingseller" element={<Pendingseller />} />
+          <Route path="/trivia" element={<GamingPage />} />
+          <Route path="/buyerProfile" element={<BuyerProfilePage />} />
+          <Route path="/chats" element={<ChatList />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+
+      {!hideLayout && <Footer />}
+    </div>
+  );
+}
 
 function App() {
   return (
-    
     <Router>
-         <ScrollToTop/>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-
-        <main className="flex-1 p-4">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/listings" element={<Listing />} />
-            <Route path="/listingdetails" element={<ListingDetails />} />
-            <Route path="/create-listing" element={<CreateListing />} />
-            <Route path="/edit-listing/:id" element={<EditListing />} />
-            <Route path="/seller" element={<SellerProfile />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/boost" element={<BoostListings />} />
-            <Route path="/tags" element={<TagsPage />} />
-            <Route path="/review" element={<ReviewPage />} />
-            <Route path="/pendingbuyer" element={<PendingBuyer />} />
-            <Route path="/pendingseller" element={<Pendingseller />} />
-
- 
-            <Route path="/chats" element={<ChatList />} />
-
-
-
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-
-        <Footer />
-      </div>
+      <ScrollToTop />
+      <Layout />
     </Router>
   );
 }

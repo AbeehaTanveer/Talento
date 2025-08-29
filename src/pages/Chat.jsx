@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, use } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ModernChatbox = ({ userType = 'buyer' }) => {
   const [messages, setMessages] = useState([
@@ -187,9 +187,12 @@ const addEmoji = (emoji) => {
   <div className="bg-[#006D77] p-4 text-white">
     <div className="flex items-center">
       <div className="relative">
+        <Link to="/buyerProfile">
+
         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-[#006D77] font-bold mr-3">
           JS
         </div>
+        </Link>
         <div className="absolute bottom-0 right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-white"></div>
       </div>
       <div>

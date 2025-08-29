@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiStar, FiMapPin, FiCalendar, FiShoppingBag, FiMessageSquare, FiUserCheck, FiClock, FiHeart } from 'react-icons/fi';
+import { FiStar, FiMapPin, FiCalendar, FiShoppingBag, FiMessageSquare, FiUserCheck, FiClock, FiHeart, FiCheckCircle, FiAlertTriangle } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 
 const SellerProfilePage = () => {
@@ -24,7 +24,7 @@ const SellerProfilePage = () => {
     memberSince: "March 2035",
     responseTime: "1 hour",
     totalListings: 124,
-    sales: 892,
+ 
     verified: true,
     categories: [
       { name: "AI Templates", count: 56 },
@@ -46,103 +46,132 @@ const SellerProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] text-[#333333]">
-      {/* === Step 1: Top Section (Banner & Seller Info) === */}
-      <div className="relative">
-        {/* Banner */}
-        <div className="h-64 bg-gradient-to-r from-[#006D77] to-[#006D77]/70 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('https://example.com/grid-pattern.png')] opacity-20"></div>
+  {/* === Step 1: Top Section (Banner & Seller Info) === */}
+<div className="relative">
+  {/* Banner */}
+  <div className="h-64 bg-gradient-to-r from-[#006D77] to-[#006D77]/70 relative overflow-hidden">
+    <div className="absolute inset-0 bg-[url('https://example.com/grid-pattern.png')] opacity-20"></div>
+  </div>
+
+  {/* Seller Profile */}
+  <div className="max-w-7xl mx-auto px-6 relative -mt-16">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="flex flex-col md:flex-row">
+        {/* Profile Picture */}
+        <div className="md:w-1/4 p-6 flex justify-center">
+          <div className="w-48 h-48 bg-gradient-to-br from-[#006D77] to-[#FF6F61] rounded-2xl flex items-center justify-center text-white text-6xl">
+            <FiUserCheck className="w-20 h-20" />
+          </div>
         </div>
 
-        {/* Seller Profile */}
-        <div className="max-w-7xl mx-auto px-6 relative -mt-16">
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div className="flex flex-col md:flex-row">
-              {/* Profile Picture */}
-              <div className="md:w-1/4 p-6 flex justify-center">
-                <div className="w-48 h-48 bg-gradient-to-br from-[#006D77] to-[#FF6F61] flex items-center justify-center text-white text-6xl">
-                  <FiUserCheck className="w-20 h-20" />
-                </div>
+        {/* Seller Info */}
+        <div className="md:w-3/4 p-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-[#333333]">{seller.name}</h1>
+              <p className="text-lg text-[#333333]/80">{seller.tagline}</p>
+            </div>
+            <div className="flex space-x-4 mt-4 md:mt-0">
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setIsFollowing(!isFollowing)}
+                className={`px-6 py-2 rounded-lg border ${isFollowing ? 'border-[#006D77] text-[#006D77]' : 'border-[#FF6F61] bg-[#FF6F61] text-white'}`}
+              >
+                {isFollowing ? 'Following' : 'Follow'}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-6 py-2 bg-[#006D77] text-white rounded-lg flex items-center"
+              >
+                <FiMessageSquare className="mr-2" /> Contact
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Rating */}
+          <div className="flex items-center mb-6">
+            <div className="flex mr-2">
+              {[...Array(5)].map((_, i) => (
+                <FiStar key={i} className={`w-5 h-5 ${i < Math.floor(seller.rating) ? 'fill-[#FF6F61] text-[#FF6F61]' : 'text-gray-300'}`} />
+              ))}
+            </div>
+            <span className="font-medium text-[#333333]">{seller.rating}</span>
+            <span className="text-[#333333]/60 ml-2">({seller.reviewsCount} reviews)</span>
+          </div>
+
+          {/* Seller Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="flex items-center">
+              <FiMapPin className="text-[#006D77] mr-2" />
+              <span className="text-[#333333]">{seller.location}</span>
+            </div>
+            <div className="flex items-center">
+              <FiCalendar className="text-[#006D77] mr-2" />
+              <span className="text-[#333333]">Member since {seller.memberSince}</span>
+            </div>
+            <div className="flex items-center">
+              <FiClock className="text-[#006D77] mr-2" />
+              <span className="text-[#333333]">Avg. response: {seller.responseTime}</span>
+            </div>
+            {seller.verified && (
+              <div className="flex items-center">
+                <FiUserCheck className="text-[#006D77] mr-2" />
+                <span className="text-[#333333]">Verified Seller</span>
               </div>
+            )}
+          </div>
 
-              {/* Seller Info */}
-              <div className="md:w-3/4 p-6">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
-                  <div>
-                    <h1 className="text-3xl font-bold">{seller.name}</h1>
-                    <p className="text-lg text-[#333333]/80">{seller.tagline}</p>
-                  </div>
-                  <div className="flex space-x-4 mt-4 md:mt-0">
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setIsFollowing(!isFollowing)}
-                      className={`px-6 py-2 rounded-lg border ${isFollowing ? 'border-[#006D77] text-[#006D77]' : 'border-[#FF6F61] bg-[#FF6F61] text-white'}`}
-                    >
-                      {isFollowing ? 'Following' : 'Follow'}
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="px-6 py-2 bg-[#006D77] text-white rounded-lg flex items-center"
-                    >
-                      <FiMessageSquare className="mr-2" /> Contact
-                    </motion.button>
-                  </div>
-                </div>
+          {/* Stats */}
+          <div className="flex space-x-6 mb-6">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-[#006D77]">{seller.totalListings}</div>
+              <div className="text-sm text-[#333333]/60">Listings</div>
+            </div>
+    
+          </div>
 
-                {/* Rating */}
-                <div className="flex items-center mb-6">
-                  <div className="flex mr-2">
-                    {[...Array(5)].map((_, i) => (
-                      <FiStar key={i} className={`w-5 h-5 ${i < Math.floor(seller.rating) ? 'fill-[#FF6F61] text-[#FF6F61]' : 'text-gray-300'}`} />
-                    ))}
-                  </div>
-                  <span className="font-medium">{seller.rating}</span>
-                  <span className="text-[#333333]/60 ml-2">({seller.reviewsCount} reviews)</span>
-                </div>
-
-                {/* Seller Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                  <div className="flex items-center">
-                    <FiMapPin className="text-[#006D77] mr-2" />
-                    <span>{seller.location}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <FiCalendar className="text-[#006D77] mr-2" />
-                    <span>Member since {seller.memberSince}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <FiClock className="text-[#006D77] mr-2" />
-                    <span>Avg. response: {seller.responseTime}</span>
-                  </div>
-                  {seller.verified && (
-                    <div className="flex items-center">
-                      <FiUserCheck className="text-[#006D77] mr-2" />
-                      <span>Verified Seller</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Stats */}
-                <div className="flex space-x-6 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#006D77]">{seller.totalListings}</div>
-                    <div className="text-sm text-[#333333]/60">Listings</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-[#006D77]">{seller.sales}</div>
-                    <div className="text-sm text-[#333333]/60">Sales</div>
-                  </div>
-                </div>
-
-                {/* Bio */}
-                <p className="text-[#333333]/80">{seller.bio}</p>
+          {/* Performance Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-[#FFF6E5] rounded-xl border border-[#FF6F61]/20">
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                <FiCheckCircle className="text-green-600 w-5 h-5" />
+              </div>
+              <div>
+                <div className="font-semibold text-[#333333]">Confirmed sales</div>
+                <div className="text-2xl font-bold text-green-600">12</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                <FiAlertTriangle className="text-red-600 w-5 h-5" />
+              </div>
+              <div>
+                <div className="font-semibold text-[#333333]">Disputes</div>
+                <div className="text-2xl font-bold text-red-600">2</div>
+              </div>
+            </div>
+            
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center mr-3">
+                <FiClock className="text-amber-600 w-5 h-5" />
+              </div>
+              <div>
+                <div className="font-semibold text-[#333333]">Ignored buyers</div>
+                <div className="text-2xl font-bold text-amber-600">3</div>
               </div>
             </div>
           </div>
+
+          {/* Bio */}
+          <p className="text-[#333333]/80">{seller.bio}</p>
         </div>
       </div>
-
+    </div>
+  </div>
+</div>
       {/* === Step 2: Bottom Section (Categories, Listings & Reviews) === */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Categories */}
