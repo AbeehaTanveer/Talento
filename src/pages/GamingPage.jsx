@@ -4,11 +4,15 @@ import { FiClock, FiAward, FiHelpCircle, FiRefreshCw, FiShare2, FiArrowLeft } fr
 
 const RiddleWordGame = () => {
   const riddles = [
-    { id: 1, question: "I'm tall when I'm young and short when I'm old. What am I?", answer: "CANDLE", difficulty: "easy" },
-    { id: 2, question: "What has keys but can't open locks?", answer: "PIANO", difficulty: "easy" },
-    { id: 3, question: "What gets wet while drying?", answer: "TOWEL", difficulty: "medium" },
-    { id: 4, question: "What has a head, a tail, but no body?", answer: "COINS", difficulty: "medium" },
-    { id: 5, question: "The more you take, the more you leave behind. What am I?", answer: "STEPS", difficulty: "hard" }
+    { id: 1, question: "What has keys but can't open locks?", answer: "PIANO", difficulty: "easy" },
+    { id: 2, question: "What gets wet while drying?", answer: "TOWEL", difficulty: "medium" },
+    { id: 3, question: "What has a head, a tail, but no body?", answer: "COINS", difficulty: "medium" },
+    { id: 4, question: "The more you take, the more you leave behind. What am I?", answer: "STEPS", difficulty: "hard" },
+  { id: 5, question: "What is full of holes but still holds water?", answer: "SPONGE", difficulty: "easy" },
+  { id: 6, question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?", answer: "MAPS", difficulty: "medium" },
+  { id: 7, question: "What is always in front of you but can’t be seen?", answer: "FUTURE", difficulty: "hard" },
+  { id: 8, question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "ECHO", difficulty: "medium" },
+  { id: 9, question: "I am taken from a mine and shut up in a wooden case, from which I am never released, and yet I am used by almost everyone. What am I?", answer: "PENCIL", difficulty: "hard" }
   ];
 
   const [currentRiddle, setCurrentRiddle] = useState(0);
@@ -135,32 +139,38 @@ const RiddleWordGame = () => {
 
 return (
   <div className="min-h-screen w-full bg-gradient-to-br from-[#F5F5F5] to-[#FFF6E5] flex flex-col py-8 px-4">
-    {/* Header */}
-    <div className="w-full flex justify-between items-center mb-8">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => window.history.back()}
-        className="flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full text-sm font-medium"
-      >
-        <FiArrowLeft className="mr-2" />
-        Back
-      </motion.button>
-      
-      <motion.header 
-        className="text-center"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#FF6F61] to-[#006D77] bg-clip-text text-transparent mb-2">
-          Riddle Word
-        </h1>
-        <p className="text-gray-600">Solve the riddle by guessing the word!</p>
-      </motion.header>
-      
-      <div className="w-20"></div> {/* Spacer for balance */}
-    </div>
+{/* Header */}
+<div className="w-full flex flex-col md:flex-row justify-between items-center mb-8 gap-4 md:gap-0">
+  {/* Back button */}
+  <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    onClick={() => window.history.back()}
+    className="flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full text-sm font-medium self-start md:self-auto"
+  >
+    <FiArrowLeft className="mr-2" />
+    Back
+  </motion.button>
+
+  {/* Title & Subtitle */}
+  <motion.header 
+    className="text-center flex-1"
+    initial={{ y: -50, opacity: 0 }}
+    animate={{ y: 0, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#FF6F61] to-[#006D77] bg-clip-text text-transparent mb-1 sm:mb-2">
+      Riddle Word
+    </h1>
+    <p className="text-gray-600 text-sm sm:text-base">
+      Solve the riddle by guessing the word!
+    </p>
+  </motion.header>
+
+  {/* Spacer (hidden on mobile) */}
+  <div className="hidden md:block w-20"></div>
+</div>
+
 
     {/* Game Container */}
     <div className="w-full flex flex-col lg:flex-row gap-8 flex-1">

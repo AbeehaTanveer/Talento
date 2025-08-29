@@ -284,6 +284,59 @@ const Navbar = () => {
               )}
             </button>
 
+
+{isNotificationsOpen && (
+  <div className="absolute top-full right-0 mt-2 w-80 bg-white shadow-xl rounded-lg py-2 z-50 border border-gray-100">
+    <div className="px-4 py-2 border-b border-gray-100 flex justify-between items-center">
+      <h3 className="font-semibold text-gray-800">Notifications</h3>
+      <button 
+        onClick={() => setIsNotificationsOpen(false)}
+        className="text-gray-400 hover:text-gray-600"
+      >
+        <FiX className="w-4 h-4" />
+      </button>
+    </div>
+    <div className="max-h-96 overflow-y-auto">
+      {notifications.map((notification) => (
+        <div
+          key={notification.id}
+          className="px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0"
+        >
+          <div className="flex items-start space-x-3">
+            <div className="mt-0.5">{notification.icon}</div>
+            <div className="flex-1">
+              <p className="font-medium text-gray-800 text-sm">
+                {notification.title}
+              </p>
+              <p className="text-gray-600 text-xs mt-1">
+                {notification.message}
+              </p>
+              <p className="text-gray-400 text-xs mt-2">
+                {notification.time}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div className="px-4 py-2 border-t border-gray-100">
+      <button className="text-teal-600 hover:text-teal-700 text-sm font-medium w-full text-center">
+        View All Notifications
+      </button>
+    </div>
+  </div>
+)}
+
+              <button
+          
+              className="flex items-center justify-center w-9 h-9 rounded-full duration-200 text-teal-600 hover:bg-teal-50 relative"
+            >
+                <Link to="/trivia">
+                <FiHelpCircle className="w-5 h-5" />
+            </Link>
+              </button>
+           
+
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-[#333333] hover:text-teal-600 focus:outline-none"
