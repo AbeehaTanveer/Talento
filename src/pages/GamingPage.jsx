@@ -333,44 +333,44 @@ return (
   className="absolute opacity-0 pointer-events-none"
 />
 
-
-        {/* Game Status */}
-        {gameStatus !== 'playing' && (
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-4 bg-white rounded-2xl p-6 shadow-lg"
-          >
-            <h3 className={`text-2xl font-bold mb-2 ${gameStatus === 'won' ? 'text-green-600' : 'text-red-600'}`}>
-              {gameStatus === 'won' ? 'Congratulations! 🎉' : 'Time\'s Up! ⏰'}
-            </h3>
-            <p className="text-gray-700 mb-4">
-              {gameStatus === 'won' 
-                ? `You solved it in ${formatTime(180 - timeLeft)} with ${usedClue ? 'a clue' : 'no clues'}!` 
-                : `The answer was: ${riddles[currentRiddle].answer}`}
-            </p>
-            <div className="flex justify-center gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={restartGame}
-                className="flex items-center px-4 py-2 bg-[#006D77] hover:bg-[#005a63] text-white rounded-full text-sm font-medium"
-              >
-                <FiRefreshCw className="mr-2" />
-                Play Again
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={shareResults}
-                className="flex items-center px-4 py-2 bg-[#FF6F61] hover:bg-[#e55d50] text-white rounded-full text-sm font-medium"
-              >
-                <FiShare2 className="mr-2" />
-                Share
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
+{gameStatus !== 'playing' && (
+  <motion.div 
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    className="fixed inset-0 flex items-center justify-center bg-black/40 z-50 p-4"
+  >
+    <div className="text-center bg-white rounded-2xl p-6 shadow-lg w-full max-w-sm">
+      <h3 className={`text-2xl font-bold mb-2 ${gameStatus === 'won' ? 'text-green-600' : 'text-red-600'}`}>
+        {gameStatus === 'won' ? 'Congratulations! 🎉' : 'Time\'s Up! ⏰'}
+      </h3>
+      <p className="text-gray-700 mb-4">
+        {gameStatus === 'won' 
+          ? `You solved it in ${formatTime(180 - timeLeft)} with ${usedClue ? 'a clue' : 'no clues'}!` 
+          : `The answer was: ${riddles[currentRiddle].answer}`}
+      </p>
+      <div className="flex justify-center gap-4 flex-wrap">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={restartGame}
+          className="flex items-center px-4 py-2 bg-[#006D77] hover:bg-[#005a63] text-white rounded-full text-sm font-medium"
+        >
+          <FiRefreshCw className="mr-2" />
+          Play Again
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={shareResults}
+          className="flex items-center px-4 py-2 bg-[#FF6F61] hover:bg-[#e55d50] text-white rounded-full text-sm font-medium"
+        >
+          <FiShare2 className="mr-2" />
+          Share
+        </motion.button>
+      </div>
+    </div>
+  </motion.div>
+)}
 
         {gameStatus === 'playing' && (
           <div className="text-center text-sm text-gray-500 mt-4">
