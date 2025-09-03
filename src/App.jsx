@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 // components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollTop";
 
 // pages
 import Home from "./pages/Home";
@@ -12,13 +13,12 @@ import Listing from "./pages/Listing";
 import ListingDetails from "./pages/ListingDetails";
 import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
-import SellerProfile from "./pages/SellerProfile";
+import SellerProfile from "./pages/Dashboard"; // <-- Dashboard Layout
 import Categories from "./pages/Categories";
 import Favorites from "./pages/Favorites";
 import Chat from "./pages/Chat";
 import BoostListings from "./pages/BoostListings";
 import NotFound from "./pages/NotFound";
-import ScrollToTop from "./components/ScrollTop";
 import TagsPage from "./pages/TagsPage";
 import ReviewPage from "./pages/ReviewPage";
 import ChatList from "./pages/Chatlist";
@@ -26,6 +26,9 @@ import PendingBuyer from "./pages/PendingBuyer";
 import Pendingseller from "./pages/PendingSeller";
 import GamingPage from "./pages/GamingPage";
 import BuyerProfilePage from "./pages/BuyerProfile";
+import PublicProfile from "./components/PublicProfile";
+import PurchaseHistory from "./components/PurchaseHistory";
+import Dashboard from "./pages/Dashboard";
 
 // ✅ Wrapper so we can use useLocation inside
 function Layout() {
@@ -45,7 +48,6 @@ function Layout() {
           <Route path="/listingdetails" element={<ListingDetails />} />
           <Route path="/create-listing" element={<CreateListing />} />
           <Route path="/edit-listing/:id" element={<EditListing />} />
-          <Route path="/seller" element={<SellerProfile />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/chat" element={<Chat />} />
@@ -57,6 +59,12 @@ function Layout() {
           <Route path="/trivia" element={<GamingPage />} />
           <Route path="/buyerProfile" element={<BuyerProfilePage />} />
           <Route path="/chats" element={<ChatList />} />
+          <Route path="/profile" element={<PublicProfile />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/purchases" element={<PurchaseHistory />} />
+
+       
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

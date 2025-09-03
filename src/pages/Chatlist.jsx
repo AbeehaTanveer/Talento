@@ -85,15 +85,11 @@ const Chatlist
   return (
   <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row font-sans">
       {/* Sidebar */}
-      <div className={`w-full lg:w-1/3 border-r border-gray-200 bg-white mt-9 flex flex-col 
+      <div className={`w-full lg:w-1/3 border-r border-gray-200 bg-white mt-14 flex flex-col 
         ${selectedChat ? 'hidden lg:flex' : 'flex'}`}>
         
     
-       {/* Header */}
-        <div className="p-4 border-b border-gray-200 mt-3.5">
-          <h1 className="text-xl font-bold text-gray-800">Messages</h1>
-          <p className="text-gray-500 text-sm">Your recent conversations</p>
-        </div>
+   
 
         {/* Search Bar */}
         <div className="p-4 border-b border-gray-200">

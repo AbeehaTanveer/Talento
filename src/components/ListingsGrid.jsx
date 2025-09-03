@@ -213,7 +213,7 @@ const ListingsGrid = () => {
         title: 'Smart Watch Pro',
         price: '₿0.39',
         originalPrice: '₿0.59',
-        imageId: 'smart-watch-pro' // Cloudinary public ID
+        imageId: 'https://media.istockphoto.com/id/486993228/photo/smart-watch.jpg?s=612x612&w=0&k=20&c=dVKA7YSTjnhzYAoYcxDwGEuV18QV-K-YuZCABnjt8pE=' // Cloudinary public ID
       },
       {
         id: 13,

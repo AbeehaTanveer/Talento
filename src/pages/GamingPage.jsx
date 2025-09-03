@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiClock, FiAward, FiHelpCircle, FiRefreshCw, FiShare2, FiArrowLeft } from 'react-icons/fi';
 
 const RiddleWordGame = () => {
-const riddles = [
-  { id: 1, question: "What has keys but can't open locks?", answer: "PIANO", difficulty: "easy" },
-  { id: 2, question: "What gets wetter as it dries?", answer: "TOWEL", difficulty: "medium" },
-  { id: 3, question: "What has a head, a tail, but no body?", answer: "COINS", difficulty: "medium" },
-  { id: 4, question: "The more you take, the more you leave behind. What am I?", answer: "STEPS", difficulty: "hard" },
-  { id: 5, question: "I fly without wings, I cry without eyes. What am I?", answer: "CLOUD", difficulty: "medium" },
-  { id: 6, question: "I have hands but cannot clap. What am I?", answer: "CLOCK", difficulty: "easy" },
-  { id: 7, question: "I go up but never come down. What am I?", answer: "YEARS", difficulty: "hard" },
-  { id: 8, question: "I’m round and bright, I shine at night. What am I?", answer: "MOONS", difficulty: "easy" },
-  { id: 9, question: "I run but never walk, I murmur but never talk. What am I?", answer: "RIVER", difficulty: "medium" },
-  { id: 10, question: "I’m not alive, but I grow. I don’t have lungs, but I need air. What am I?", answer: "FIRES", difficulty: "hard" }
-];
-
+  const riddles = [
+    { id: 1, question: "What has keys but can't open locks?", answer: "PIANO", difficulty: "easy" },
+    { id: 2, question: "What gets wetter as it dries?", answer: "TOWEL", difficulty: "medium" },
+    { id: 3, question: "What has a head, a tail, but no body?", answer: "COINS", difficulty: "medium" },
+    { id: 4, question: "The more you take, the more you leave behind. What am I?", answer: "STEPS", difficulty: "hard" },
+    { id: 5, question: "I fly without wings, I cry without eyes. What am I?", answer: "CLOUD", difficulty: "medium" },
+    { id: 6, question: "I have hands but cannot clap. What am I?", answer: "CLOCK", difficulty: "easy" },
+    { id: 7, question: "I go up but never come down. What am I?", answer: "YEARS", difficulty: "hard" },
+    { id: 8, question: "I'm round and bright, I shine at night. What am I?", answer: "MOONS", difficulty: "easy" },
+    { id: 9, question: "I run but never walk, I murmur but never talk. What am I?", answer: "RIVER", difficulty: "medium" },
+    { id: 10, question: "I'm not alive, but I grow. I don't have lungs, but I need air. What am I?", answer: "FIRES", difficulty: "hard" }
+  ];
 
   const [currentRiddle, setCurrentRiddle] = useState(0);
   const [guesses, setGuesses] = useState(Array(5).fill(''));
@@ -32,6 +31,8 @@ const riddles = [
     { name: 'BrainTeaser', time: 145, clues: 2 },
     { name: 'You', time: 0, clues: 0, isCurrent: true }
   ]);
+
+  const inputRef = useRef(null);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * riddles.length);
@@ -67,34 +68,44 @@ const riddles = [
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (gameStatus !== 'playing') return;
-      if (e.key === 'Enter') {
-        if (currentGuess.length === 5) {
-          const newGuesses = [...guesses];
-          newGuesses[guesses.findIndex(val => val === '')] = currentGuess;
-          setGuesses(newGuesses);
-          setCurrentGuess('');
-          if (currentGuess === riddles[currentRiddle].answer) {
-            setGameStatus('won');
-            const newLeaderboard = [...leaderboard];
-            newLeaderboard[4] = { 
-              ...newLeaderboard[4], 
-              time: 180 - timeLeft, 
-              clues: usedClue ? 1 : 0 
-            };
-            setLeaderboard(newLeaderboard.sort((a, b) => a.time - b.time));
-          } else if (newGuesses[4] !== '') {
-            setGameStatus('lost');
+      
+      // Only process key events if the input is not focused
+      if (document.activeElement !== inputRef.current) {
+        if (e.key === 'Enter') {
+          if (currentGuess.length === 5) {
+            submitGuess();
           }
+        } else if (e.key === 'Backspace') {
+          setCurrentGuess(currentGuess.slice(0, -1));
+        } else if (/^[A-Za-z]$/.test(e.key) && currentGuess.length < 5) {
+          setCurrentGuess(currentGuess + e.key.toUpperCase());
         }
-      } else if (e.key === 'Backspace') {
-        setCurrentGuess(currentGuess.slice(0, -1));
-      } else if (/^[A-Za-z]$/.test(e.key) && currentGuess.length < 5) {
-        setCurrentGuess(currentGuess + e.key.toUpperCase());
       }
     };
+    
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentGuess, gameStatus, guesses, currentRiddle, timeLeft, usedClue, leaderboard]);
+
+  const submitGuess = () => {
+    const newGuesses = [...guesses];
+    newGuesses[guesses.findIndex(val => val === '')] = currentGuess;
+    setGuesses(newGuesses);
+    setCurrentGuess('');
+    
+    if (currentGuess === riddles[currentRiddle].answer) {
+      setGameStatus('won');
+      const newLeaderboard = [...leaderboard];
+      newLeaderboard[4] = { 
+        ...newLeaderboard[4], 
+        time: 180 - timeLeft, 
+        clues: usedClue ? 1 : 0 
+      };
+      setLeaderboard(newLeaderboard.sort((a, b) => a.time - b.time));
+    } else if (newGuesses[4] !== '') {
+      setGameStatus('lost');
+    }
+  };
 
   const handleClue = () => {
     if (usedClue) return;
@@ -135,315 +146,358 @@ const riddles = [
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
-
   // Alphabet for eliminated letters display
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
-return (
-  <div className="min-h-screen w-full bg-gradient-to-br from-[#F5F5F5] to-[#FFF6E5] flex flex-col py-8 px-4">
-{/* Header */}
-<div className="w-full flex flex-col md:flex-row justify-between items-center mb-8 gap-4 md:gap-0">
-  {/* Back button */}
-  <motion.button
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    onClick={() => window.history.back()}
-    className="flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full text-sm font-medium self-start md:self-auto"
-  >
-    <FiArrowLeft className="mr-2" />
-    Back
-  </motion.button>
-
-  {/* Title & Subtitle */}
-  <motion.header 
-    className="text-center flex-1"
-    initial={{ y: -50, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ duration: 0.5 }}
-  >
-    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#FF6F61] to-[#006D77] bg-clip-text text-transparent mb-1 sm:mb-2">
-      Riddle Word
-    </h1>
-    <p className="text-gray-600 text-sm sm:text-base">
-      Solve the riddle by guessing the word!
-    </p>
-  </motion.header>
-
-  {/* Spacer (hidden on mobile) */}
-  <div className="hidden md:block w-20"></div>
-</div>
-
-
-    {/* Game Container */}
-    <div className="w-full flex flex-col lg:flex-row gap-8 flex-1">
-      {/* Left Column - Game Board */}
-      <div className="flex-1">
-        {/* Riddle Display */}
-        <motion.div 
-          className="bg-white rounded-2xl p-6 shadow-lg mb-6 text-center w-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-br from-[#F5F5F5] to-[#FFF6E5] flex flex-col py-8 px-4">
+      {/* Header */}
+      <div className="w-full flex flex-col md:flex-row justify-between items-center mb-8 gap-4 md:gap-0">
+        {/* Back button */}
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => window.history.back()}
+          className="flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-full text-sm font-medium self-start md:self-auto"
         >
-          <div className="flex items-center justify-center mb-2">
-            <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
-            <p className="text-sm text-gray-500">Live</p>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            {riddles[currentRiddle].question}
-          </h2>
-          
-          {/* Timer and Clue Section */}
-          <div className="flex justify-between items-center mt-4">
-            <div className="flex items-center text-gray-700">
-              <FiClock className="mr-2" />
-              <span className="font-mono">{formatTime(timeLeft)}</span>
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleClue}
-              disabled={usedClue}
-              className={`flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                usedClue 
-                  ? 'bg-gray-200 text-gray-500' 
-                  : 'bg-[#FF6F61] text-white hover:bg-[#e55d50]'
-              }`}
-            >
-              <FiHelpCircle className="mr-2" />
-              {usedClue ? 'Clue Used' : 'Get a Clue'}
-            </motion.button>
-          </div>
-        </motion.div>
+          <FiArrowLeft className="mr-2" />
+          Back
+        </motion.button>
 
-        {/* Clue Reveal */}
-        <AnimatePresence>
-          {showClue && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="bg-yellow-100 border border-yellow-300 rounded-xl p-4 mb-6 text-center w-full"
-            >
-              <p className="text-yellow-800 font-medium">
-                Letter {getCluePosition() + 1} is "{riddles[currentRiddle].answer[getCluePosition()]}"
-              </p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        
+        {/* Title & Subtitle */}
+        <motion.header
+          className="text-center flex-1"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-[#FF6F61] to-[#006D77] bg-clip-text text-transparent mb-1 sm:mb-2">
+            Riddle Word
+          </h1>
+          <p className="text-gray-600 text-sm sm:text-base">
+            Solve the riddle by guessing the word!
+          </p>
+        </motion.header>
 
-        {/* Eliminated Letters */}
-        {eliminatedLetters.size > 0 && (
-          <motion.div 
-            className="bg-white rounded-2xl p-4 shadow-lg mb-6 w-full"
+        {/* Spacer (hidden on mobile) */}
+        <div className="hidden md:block w-20"></div>
+      </div>
+
+      {/* Game Container */}
+      <div className="w-full flex flex-col lg:flex-row gap-8 flex-1">
+        {/* Left Column - Game Board */}
+        <div className="flex-1">
+          {/* Riddle Display */}
+          <motion.div
+            className="bg-white rounded-2xl p-6 shadow-lg mb-6 text-center w-full"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
           >
-            <h3 className="text-sm font-medium text-gray-500 mb-2 text-center">Eliminated Letters</h3>
-            <div className="flex flex-wrap justify-center gap-2">
-              {alphabet.map(letter => (
+            <div className="flex items-center justify-center mb-2">
+              <div className="w-3 h-3 rounded-full bg-green-400 mr-2"></div>
+              <p className="text-sm text-gray-500">Live</p>
+            </div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              {riddles[currentRiddle].question}
+            </h2>
+
+            {/* Timer and Clue Section */}
+            <div className="flex justify-between items-center mt-4">
+              <div className="flex items-center text-gray-700">
+                <FiClock className="mr-2" />
+                <span className="font-mono">{formatTime(timeLeft)}</span>
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleClue}
+                disabled={usedClue}
+                className={`flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                  usedClue
+                    ? "bg-gray-200 text-gray-500"
+                    : "bg-[#FF6F61] text-white hover:bg-[#e55d50]"
+                }`}
+              >
+                <FiHelpCircle className="mr-2" />
+                {usedClue ? "Clue Used" : "Get a Clue"}
+              </motion.button>
+            </div>
+          </motion.div>
+
+          {/* Clue Reveal */}
+          <AnimatePresence>
+            {showClue && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-yellow-100 border border-yellow-300 rounded-xl p-4 mb-6 text-center w-full"
+              >
+                <p className="text-yellow-800 font-medium">
+                  Letter {getCluePosition() + 1} is "
+                  {riddles[currentRiddle].answer[getCluePosition()]}"
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Eliminated Letters */}
+          {eliminatedLetters.size > 0 && (
+            <motion.div
+              className="bg-white rounded-2xl p-4 shadow-lg mb-6 w-full"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              <h3 className="text-sm font-medium text-gray-500 mb-2 text-center">
+                Eliminated Letters
+              </h3>
+              <div className="flex flex-wrap justify-center gap-2">
+                {alphabet.map((letter) => (
+                  <div
+                    key={letter}
+                    className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium ${
+                      eliminatedLetters.has(letter)
+                        ? "bg-red-100 text-red-800 line-through"
+                        : "bg-gray-100 text-gray-500"
+                    }`}
+                  >
+                    {letter}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+
+          {/* Word Display - Full Width */}
+          <div className="bg-white rounded-2xl p-6 shadow-lg w-full mb-6 relative">
+            <div className="flex flex-col gap-6 w-full">
+              {guesses.map(
+                (guess, rowIndex) =>
+                  guess && (
+                    <motion.div
+                      key={rowIndex}
+                      className="flex justify-between w-full"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: rowIndex * 0.1 }}
+                    >
+                      {guess.split("").map((letter, colIndex) => {
+                        const isCorrect =
+                          riddles[currentRiddle].answer[colIndex] === letter;
+                        const isPresent =
+                          riddles[currentRiddle].answer.includes(letter) &&
+                          !isCorrect;
+
+                        return (
+                          <span
+                            key={colIndex}
+                            className={`text-2xl font-bold p-2 text-center flex-1
+                          ${
+                            isCorrect
+                              ? "text-[#1fae0f]"
+                              : isPresent
+                              ? "text-[#d2ed4f]"
+                              : "text-gray-400 line-through"
+                          }`}
+                          >
+                            {letter}
+                          </span>
+                        );
+                      })}
+                    </motion.div>
+                  )
+              )}
+
+              {/* Current guess row - Only show when game is playing */}
+              {gameStatus === "playing" && (
+                <>
+                  <div
+                    className="flex gap-2 justify-between w-full cursor-text"
+                    onClick={() => {
+                      if (inputRef.current) {
+                        inputRef.current.focus();
+                      }
+                    }}
+                  ></div>
+
+                  <div
+                    className="flex gap-2 justify-between w-full"
+                    onClick={() => {
+                      if (inputRef.current) {
+                        inputRef.current.focus();
+                      }
+                    }}
+                  >
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <span
+                        key={index}
+                        className="text-2xl font-bold p-2 text-center border-b-2 border-[#FF6F61] flex-1"
+                      >
+                        {currentGuess[index] || ""}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Input field - Only show when game is playing */}
+            {gameStatus === "playing" && (
+              <input
+                type="text"
+                value={currentGuess}
+                onChange={(e) => {
+                  const val = e.target.value.toUpperCase().replace(/[^A-Z]/g, "");
+                  if (val.length <= 5) setCurrentGuess(val);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && currentGuess.length === 5) {
+                    submitGuess();
+                  }
+                }}
+                className="absolute top-0 left-0 w-full h-full opacity-0 cursor-text z-10"
+                ref={inputRef}
+                onBlur={(e) => {
+                  // Keep focus on mobile to prevent keyboard from closing
+                  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                    setTimeout(() => e.target.focus(), 100);
+                  }
+                }}
+              />
+            )}
+          </div>
+
+          {/* Game Status - Show when game is over */}
+          {gameStatus !== "playing" && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-4 bg-white rounded-2xl p-6 shadow-lg w-full mb-6 relative z-50"
+            >
+              <h3
+                className={`text-2xl font-bold mb-2 ${
+                  gameStatus === "won" ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {gameStatus === "won" ? "Congratulations! 🎉" : "Time's Up! ⏰"}
+              </h3>
+              <p className="text-gray-700 mb-4">
+                {gameStatus === "won"
+                  ? `You solved it in ${formatTime(180 - timeLeft)} with ${
+                      usedClue ? "a clue" : "no clues"
+                    }!`
+                  : `The answer was: ${riddles[currentRiddle].answer}`}
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={restartGame}
+                  className="flex items-center justify-center px-4 py-2 bg-[#006D77] hover:bg-[#005a63] text-white rounded-full text-sm font-medium"
+                >
+                  <FiRefreshCw className="mr-2" />
+                  Play Again
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={shareResults}
+                  className="flex items-center justify-center px-4 py-2 bg-[#FF6F61] hover:bg-[#e55d50] text-white rounded-full text-sm font-medium"
+                >
+                  <FiShare2 className="mr-2" />
+                  Share
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Instruction text - Only show when game is playing */}
+          {gameStatus === "playing" && (
+            <div className="text-center text-sm text-gray-500 mt-4">
+              <p> Type your guess, then press Enter to submit</p>
+            </div>
+          )}
+        </div>
+
+        {/* Right Column - Leaderboard */}
+        <div className="flex-1 w-full">
+          <motion.div
+            className="bg-white rounded-2xl p-6 shadow-lg w-full"
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="flex items-center mb-6">
+              <FiAward className="text-yellow-500 text-xl mr-2" />
+              <h2 className="text-xl font-semibold text-gray-800">Leaderboard</h2>
+            </div>
+
+            <div className="space-y-3">
+              {leaderboard.map((player, index) => (
                 <div
-                  key={letter}
-                  className={`w-8 h-8 flex items-center justify-center rounded-md text-sm font-medium ${
-                    eliminatedLetters.has(letter)
-                      ? 'bg-red-100 text-red-800 line-through'
-                      : 'bg-gray-100 text-gray-500'
+                  key={index}
+                  className={`flex items-center justify-between p-3 rounded-xl ${
+                    player.isCurrent
+                      ? "bg-blue-50 border border-blue-200"
+                      : "bg-gray-50"
                   }`}
                 >
-                  {letter}
+                  <div className="flex items-center">
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm mr-3 ${
+                        index === 0
+                          ? "bg-yellow-500"
+                          : index === 1
+                          ? "bg-gray-400"
+                          : index === 2
+                          ? "bg-yellow-700"
+                          : "bg-gray-500"
+                      }`}
+                    >
+                      {index + 1}
+                    </div>
+                    <span
+                      className={`font-medium ${
+                        player.isCurrent ? "text-blue-600" : "text-gray-800"
+                      }`}
+                    >
+                      {player.name}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-sm font-medium text-gray-700">
+                      {player.time}s
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {player.clues} clue{player.clues !== 1 ? "s" : ""}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 pt-4 border-t border-gray-200">
+              <p className="text-sm text-gray-500 text-center">
+                Solve faster and use fewer clues to climb the ranks!
+              </p>
+            </div>
           </motion.div>
-        )}
-
-  {/* Word Display - Full Width */}
-<div className="bg-white rounded-2xl p-6 shadow-lg w-full mb-6">
-  <div className="flex flex-col gap-6 w-full">
-    {guesses.map((guess, rowIndex) => (
-      guess && (
-        <motion.div 
-          key={rowIndex}
-          className="flex justify-between w-full"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: rowIndex * 0.1 }}
-        >
-          {guess.split('').map((letter, colIndex) => {
-            const isCorrect = riddles[currentRiddle].answer[colIndex] === letter;
-            const isPresent = riddles[currentRiddle].answer.includes(letter) && !isCorrect;
-
-            return (
-              <span
-                key={colIndex}
-                className={`text-2xl font-bold p-2 text-center flex-1
-                  ${isCorrect ? 'text-[#1fae0f]' : 
-                    isPresent ? 'text-[#d2ed4f]' : 
-                    'text-gray-400 line-through'}`}
-              >
-                {letter}
-              </span>
-            );
-          })}
-        </motion.div>
-      )
-    ))}
-    <div 
-  className="flex gap-2 justify-between w-full cursor-text"
-  onClick={() => document.querySelector('input[type="text"]').focus()}
-></div>
-    
-    {/* Current guess */}
-    {gameStatus === 'playing' && (
-      <div className="flex gap-2 justify-between w-full"
-          onClick={() => document.querySelector('input[type="text"]').focus()}>
-    
-        {Array.from({ length: 5 }).map((_, index) => (
-          <span
-            key={index}
-            className="text-2xl font-bold p-2 text-center border-b-2 border-[#FF6F61] flex-1"
-          >
-            {currentGuess[index] || ''}
-          </span>
-        ))}
+        </div>
       </div>
-    )}
-  </div>
-</div>
 
-
-
-{/* Hidden input for mobile typing */}
-<input
-  type="text"
-  value={currentGuess}
-  onChange={(e) => {
-    const val = e.target.value.toUpperCase().replace(/[^A-Z]/g, '');
-    if (val.length <= 5) setCurrentGuess(val);
-  }}
-  onKeyDown={(e) => {
-    if (e.key === 'Enter' && currentGuess.length === 5) {
-      const newGuesses = [...guesses];
-      newGuesses[guesses.findIndex(val => val === '')] = currentGuess;
-      setGuesses(newGuesses);
-      setCurrentGuess('');
-    }
-  }}
-  className="absolute opacity-0 pointer-events-none"
-/>
-
-
-    {/* Game Status */}
-{gameStatus !== 'playing' && (
-  <motion.div 
-    initial={{ opacity: 0, scale: 0.8 }}
-    animate={{ opacity: 1, scale: 1 }}
-    className="text-center py-4 bg-white rounded-2xl p-6 shadow-lg w-full"
-  >
-    <h3 className={`text-2xl font-bold mb-2 ${gameStatus === 'won' ? 'text-green-600' : 'text-red-600'}`}>
-      {gameStatus === 'won' ? 'Congratulations! 🎉' : 'Time\'s Up! ⏰'}
-    </h3>
-    <p className="text-gray-700 mb-4">
-      {gameStatus === 'won' 
-        ? `You solved it in ${formatTime(180 - timeLeft)} with ${usedClue ? 'a clue' : 'no clues'}!` 
-        : `The answer was: ${riddles[currentRiddle].answer}`}
-    </p>
-    <div className="flex flex-col sm:flex-row justify-center gap-4">
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={restartGame}
-        className="flex items-center justify-center px-4 py-2 bg-[#006D77] hover:bg-[#005a63] text-white rounded-full text-sm font-medium"
+      {/* Footer */}
+      <motion.footer
+        className="mt-8 text-center text-gray-500 text-sm w-full"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
       >
-        <FiRefreshCw className="mr-2" />
-        Play Again
-      </motion.button>
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={shareResults}
-        className="flex items-center justify-center px-4 py-2 bg-[#FF6F61] hover:bg-[#e55d50] text-white rounded-full text-sm font-medium"
-      >
-        <FiShare2 className="mr-2" />
-        Share
-      </motion.button>
+        <p>Made with ❤️ for word puzzle enthusiasts</p>
+      </motion.footer>
     </div>
-  </motion.div>
-)}
-
-        {gameStatus === 'playing' && (
-          <div className="text-center text-sm text-gray-500 mt-4">
-            <p>Type your guess and press Enter to submit</p>
-          </div>
-        )}
-      </div>
-
-      {/* Right Column - Leaderboard */}
-      <div className="flex-1 w-full">
-        <motion.div 
-          className="bg-white rounded-2xl p-6 shadow-lg w-full"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <div className="flex items-center mb-6">
-            <FiAward className="text-yellow-500 text-xl mr-2" />
-            <h2 className="text-xl font-semibold text-gray-800">Leaderboard</h2>
-          </div>
-          
-          <div className="space-y-3">
-            {leaderboard.map((player, index) => (
-              <div 
-                key={index} 
-                className={`flex items-center justify-between p-3 rounded-xl ${
-                  player.isCurrent 
-                    ? 'bg-blue-50 border border-blue-200' 
-                    : 'bg-gray-50'
-                }`}
-              >
-                <div className="flex items-center">
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-sm mr-3 ${
-                    index === 0 ? 'bg-yellow-500' : 
-                    index === 1 ? 'bg-gray-400' : 
-                    index === 2 ? 'bg-yellow-700' : 'bg-gray-500'
-                  }`}>
-                    {index + 1}
-                  </div>
-                  <span className={`font-medium ${player.isCurrent ? 'text-blue-600' : 'text-gray-800'}`}>
-                    {player.name}
-                  </span>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm font-medium text-gray-700">{player.time}s</div>
-                  <div className="text-xs text-gray-500">{player.clues} clue{player.clues !== 1 ? 's' : ''}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <div className="mt-6 pt-4 border-t border-gray-200">
-            <p className="text-sm text-gray-500 text-center">
-              Solve faster and use fewer clues to climb the ranks!
-            </p>
-          </div>
-        </motion.div>
-      </div>
-    </div>
-
-    {/* Footer */}
-    <motion.footer 
-      className="mt-8 text-center text-gray-500 text-sm w-full"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.6 }}
-    >
-      <p>Made with ❤️ for word puzzle enthusiasts</p>
-    </motion.footer>
-  </div>
-);
-
+  );
 };
 
 export default RiddleWordGame;

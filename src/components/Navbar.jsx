@@ -12,9 +12,13 @@ import {
   FiBell,
   FiCheckCircle,
   FiShoppingBag,
-  FiAlertCircle
+  FiAlertCircle,
+  FiLogOut, FiSettings, FiPlus 
 } from "react-icons/fi";
+import { MdGamepad } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
+
+
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -25,6 +29,34 @@ const Navbar = () => {
   
   const categoriesRef = useRef(null);
   const notificationsRef = useRef(null);
+
+
+
+// State and ref for dropdown
+const [isProfileOpen, setIsProfileOpen] = useState(false);
+const profileRef = useRef(null);
+
+// Close dropdown when clicking outside
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (profileRef.current && !profileRef.current.contains(event.target)) {
+      setIsProfileOpen(false);
+    }
+  };
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => document.removeEventListener('mousedown', handleClickOutside);
+}, []);
+
+// Dropdown menu items
+const profileMenu = [
+  { name: 'My Profile', path: '/profile', icon: <FiUser /> },
+  { name: 'Dashboard', path: '/dashboard', icon: <FiGrid /> },
+  { name: 'Settings', path: '/settings', icon: <FiSettings /> },
+  { name: 'Create Listing', path: '/create-listing', icon: <FiPlus /> },
+  { name: 'Logout', path: '/logout', icon: <FiLogOut /> },
+];
+
+
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -183,7 +215,7 @@ const Navbar = () => {
             {/* Help Button */}
             <Link to="/trivia">
               <button className="flex items-center justify-center w-9 h-9 rounded-full duration-200 text-teal-600 hover:bg-teal-50">
-                <FiHelpCircle className="w-5 h-5" />
+                <MdGamepad className="w-5 h-5" />
               </button>
             </Link>
 
@@ -269,6 +301,39 @@ const Navbar = () => {
             )}
           </div>
 
+
+          <div className="relative" ref={profileRef}>
+  <button
+    onClick={() => {
+      setIsProfileOpen(!isProfileOpen);
+      setIsNotificationsOpen(false);
+      setIsCategoriesOpen(false);
+    }}
+    className="flex items-center space-x-2 text-teal-600 hover:bg-teal-50 rounded-full p-1 transition-colors duration-200"
+  >
+    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white">
+      <FiUser className="w-5 h-5" />
+    </div>
+    <FiChevronDown className={`w-4 h-4 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+  </button>
+
+  {isProfileOpen && (
+    <div className="absolute top-full right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50 border border-gray-100">
+      {profileMenu.map((item) => (
+        <Link
+          key={item.name}
+          to={item.path}
+          className="block px-4 py-2 text-sm text-gray-700 hover:bg-teal-50 hover:text-teal-600 transition-colors flex items-center space-x-2"
+          onClick={() => setIsProfileOpen(false)}
+        >
+          {item.icon}
+          <span>{item.name}</span>
+        </Link>
+      ))}
+    </div>
+  )}
+</div>
+
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-3">
             {/* Mobile Notifications */}
@@ -332,7 +397,7 @@ const Navbar = () => {
               className="flex items-center justify-center w-9 h-9 rounded-full duration-200 text-teal-600 hover:bg-teal-50 relative"
             >
                 <Link to="/trivia">
-                <FiHelpCircle className="w-5 h-5" />
+                <MdGamepad className="w-5 h-5" />
             </Link>
               </button>
            
