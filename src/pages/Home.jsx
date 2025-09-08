@@ -89,74 +89,75 @@ const Home = () => {
   const totalPages = Math.ceil(filteredListings.length / listingsPerPage);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] p-4 mt-16">
-      {/* Floating Create Button */}
-      <Link to="/create-listing" className="no-underline text-inherit">
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setShowCreateForm(true)}
-        className="fixed bottom-6 right-6 z-10 bg-[#FF6F61] text-white p-4 rounded-full shadow-xl flex items-center"
-      >
-        <FiPlusCircle className="text-2xl" />
-      </motion.button>
-      </Link>
+<div className="min-h-screen bg-[#F5F5F5] p-4 mt-16">
+  {/* Floating Create Button */}
+  <Link to="/create-listing" className="no-underline text-inherit">
+    <motion.button
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={() => setShowCreateForm(true)}
+      className="fixed bottom-6 right-6 z-10 bg-[#FF6F61] text-white p-4 rounded-full shadow-xl flex items-center"
+    >
+      <FiPlusCircle className="text-2xl" />
+    </motion.button>
+  </Link>
 
-      <div className="max-w-6xl mx-auto">
-        {/* Search Component */}
-        <SearchBar 
-          searchQuery={searchQuery} 
-          setSearchQuery={setSearchQuery}
-          location={location}
-          setLocation={setLocation}
-        />
+  <div className="max-w-7xl mx-auto">
+    {/* Search Component */}
+    <SearchBar 
+      searchQuery={searchQuery} 
+      setSearchQuery={setSearchQuery}
+      location={location}
+      setLocation={setLocation}
+    />
 
-<HeroBanner/>
-        {/* Categories Component */}
-        {/* <CategorySelector 
-          activeCategory={activeCategory} 
-          setActiveCategory={setActiveCategory} 
-        /> */}
+    {/* Hero Banner - Adjusted spacing */}
+    <div className="mb-8">
+      <HeroBanner />
+    </div>
 
-<CategorySelector/>
-        {/* Listings Grid Component */}
-              <ListingsGrid 
+    {/* Categories Component */}
+    <div className="mb-8">
+      <CategorySelector />
+    </div>
+
+    {/* Listings Grid Component with proper spacing */}
+    <div className="mb-8">
+      <ListingsGrid 
         currentListings={currentListings}
         totalPages={totalPages}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-    
       />
-
-
-
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-8">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <motion.button
-                key={i}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`mx-1 w-10 h-10 rounded-full flex items-center justify-center ${
-                  currentPage === i + 1 ? 'bg-[#006D77] text-white' : 'bg-white'
-                }`}
-              >
-                {i + 1}
-              </motion.button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Create Listing Form */}
-      <AnimatePresence>
-        {showCreateForm && (
-          <CreateListingForm onClose={() => setShowCreateForm(false)} />
-        )}
-      </AnimatePresence>
     </div>
+
+    {/* Pagination */}
+    {totalPages > 1 && (
+      <div className="flex justify-center mt-8">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <motion.button
+            key={i}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setCurrentPage(i + 1)}
+            className={`mx-1 w-10 h-10 rounded-full flex items-center justify-center ${
+              currentPage === i + 1 ? 'bg-[#006D77] text-white' : 'bg-white'
+            }`}
+          >
+            {i + 1}
+          </motion.button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  {/* Create Listing Form */}
+  <AnimatePresence>
+    {showCreateForm && (
+      <CreateListingForm onClose={() => setShowCreateForm(false)} />
+    )}
+  </AnimatePresence>
+</div>
   );
 };
 

@@ -67,7 +67,7 @@ const FuturisticLogin = () => {
                   </svg>
                 </div>
                 <h1 className="text-2xl font-bold text-[#333333]">Welcome Back</h1>
-                <p className="text-[#333333]/80 mt-1">Sign in to your 2045 marketplace account</p>
+                <p className="text-[#333333]/80 mt-1">Sign in to your marketplace account</p>
               </div>
 
               <form onSubmit={handleSubmit}>
@@ -132,7 +132,7 @@ const FuturisticLogin = () => {
 
             {/* Footer Note */}
             <div className="bg-[#FFF6E5]/50 border-t border-white/20 p-4 text-center text-sm text-[#333333]/80">
-              Secure login with 2045 biometric verification
+              Secure login with biometric verification
             </div>
           </div>
         </motion.div>

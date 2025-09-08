@@ -43,7 +43,7 @@ function Layout() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/registers" element={<Register />} />
           <Route path="/listings" element={<Listing />} />
           <Route path="/listingdetails" element={<ListingDetails />} />
           <Route path="/create-listing" element={<CreateListing />} />

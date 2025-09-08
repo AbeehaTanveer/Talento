@@ -6,7 +6,7 @@ const purchases = [
   {
     id: 1,
     title: "iPhone 13 Pro Max - 256GB",
-    price: "$750",
+    price: "PKR750",
     date: "Oct 15, 2023",
     status: "Confirmed",
     image: "https://images.unsplash.com/photo-1632661674596-618e45e56c53?ixlib=rb-4.0.3&auto=format&fit=crop&w=928&q=80",
@@ -14,7 +14,7 @@ const purchases = [
   {
     id: 2,
     title: "Samsung Galaxy S22 Ultra",
-    price: "$700",
+    price: "PKR700",
     date: "Sep 28, 2023",
     status: "Disputed",
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=880&q=80",
@@ -22,7 +22,7 @@ const purchases = [
   {
     id: 3,
     title: "MacBook Air M1 2020",
-    price: "$850",
+    price: "PKR850",
     date: "Aug 12, 2023",
     status: "Confirmed",
     image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80",

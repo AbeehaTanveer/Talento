@@ -97,7 +97,7 @@ const FuturisticRegister = () => {
                 transition={{ duration: 0.4 }}
                 className="p-8 mt-3"
               >
-                <h2 className="text-3xl font-bold text-[#006D77] mb-2 text-center">Join Market<span className="text-[#FF6F61]">2045</span></h2>
+                <h2 className="text-3xl font-bold text-[#006D77] mb-2 text-center">Join Market<span className="text-[#FF6F61]"></span></h2>
                 <p className="text-[#333333]/80 mb-8 text-center">Choose your journey path</p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">

@@ -111,7 +111,7 @@ const Footer = () => {
         {/* Mobile Copyright (hidden on desktop) */}
         <div className="mt-8 pt-6 border-t border-white/10 md:hidden">
           <p className="text-xs text-white/60 text-center">
-            © {new Date().getFullYear()} Market2045. All rights reserved.
+            © {new Date().getFullYear()}. All rights reserved.
           </p>
         </div>
       </div>

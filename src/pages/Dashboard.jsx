@@ -69,7 +69,7 @@ const Dashboard = () => {
   const stats = [
     { 
       label: "Potential Earnings", 
-      value: "$1,248", 
+      value: "1,248", 
       change: "+12.3%", 
       icon: <DollarSign size={20} />, 
       color: "from-blue-400 to-blue-600",
@@ -105,7 +105,6 @@ const Dashboard = () => {
   const navItems = [
     { id: "dashboard", label: "Dashboard", icon: <BarChart3 size={20} /> },
     { id: "purchases", label: "Purchases", icon: <ShoppingBag size={20} />, count: 12 },
-    { id: "favourites", label: "Favourites", icon: <Heart size={20} />, count: 8 },
     { id: "listings", label: "My Listings", icon: <Package size={20} />, count: 5 },
     { id: "create", label: "Create", icon: <Plus size={20} /> },
     { id: "analytics", label: "Analytics", icon: <TrendingUpIcon size={20} /> },
@@ -422,44 +421,32 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         {/* Tabs */}
-        <div className="px-6 pb-1 overflow-x-auto mb-3.5">
-          <div className="flex space-x-1 min-w-max">
-            {navItems.map((item) => (
-              <motion.button
-                key={item.id}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setActiveTab(item.id)}
-                className={`flex items-center px-4 py-3 rounded-xl transition-all duration-200 relative ${
-                  activeTab === item.id
-                    ?  "bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-md"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                }`}
-              >
-                <span className="mr-2">{item.icon}</span>
-                <span className="font-medium whitespace-nowrap text-sm">
-                  {item.label}
-                </span>
-                {item.count && (
-                  <span
-                    className={`ml-2 text-xs px-1.5 py-0.5 rounded-full ${
-                      activeTab === item.id
-                        ? "bg-white/20 text-white"
-                        : "bg-gray-200 text-gray-700"
-                    }`}
-                  >
-                    {item.count}
-                  </span>
-                )}
-                {item.notification && (
-                  <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full mt-1 border-2 border-white"></span>
-                )}
-              </motion.button>
-            ))}
-          </div>
-        </div>
+
+<div className="px-6 pb-1 mb-3.5">
+  <div className="flex flex-wrap gap-2">
+    {navItems.map((item) => (
+      <motion.button
+        key={item.id}
+        whileHover={{ y: -2 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={() => setActiveTab(item.id)}
+        className={`flex items-center px-4 py-2 rounded-xl transition-all duration-200 relative ${
+          activeTab === item.id
+            ? "bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-md"
+            : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+        }`}
+      >
+        <span className="mr-2">{item.icon}</span>
+        <span className="font-medium whitespace-nowrap text-sm">
+          {item.label}
+        </span>
+      </motion.button>
+    ))}
+  </div>
+</div>
+
+
       </header>
 
       {/* Main Content Area */}

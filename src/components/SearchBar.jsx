@@ -1,213 +1,221 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import { FiSearch, FiMapPin, FiChevronDown, FiNavigation, FiCrosshair } from 'react-icons/fi';
+import { useState, useRef, useEffect } from 'react';
+import { FiSearch, FiMapPin, FiChevronDown, FiX, FiCheck } from 'react-icons/fi';
 
-const SearchBar = ({ searchQuery, setSearchQuery, location, setLocation }) => {
-  const pakistanProvinces = {
-    'Punjab': ['Lahore', 'Faisalabad', 'Rawalpindi', 'Multan', 'Gujranwala'],
-    'Sindh': ['Karachi', 'Hyderabad', 'Sukkur', 'Larkana', 'Mirpur Khas'],
-    'Khyber Pakhtunkhwa': ['Peshawar', 'Abbottabad', 'Mardan', 'Swat', 'Nowshera'],
-    'Balochistan': ['Quetta', 'Gwadar', 'Turbat', 'Khuzdar', 'Chaman'],
-    'Islamabad': ['Islamabad'],
-    'Gilgit-Baltistan': ['Gilgit', 'Skardu', 'Hunza'],
-    'Azad Kashmir': ['Muzaffarabad', 'Mirpur', 'Kotli']
-  };
-
-  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
-  const [selectedProvince, setSelectedProvince] = useState('');
-  const [selectedArea, setSelectedArea] = useState('');
-  const [isLocating, setIsLocating] = useState(false);
-  const [locationError, setLocationError] = useState('');
-
-  // Get user's current location using GPS
-  const getCurrentLocation = () => {
-    if (!navigator.geolocation) {
-      setLocationError('Geolocation is not supported by your browser');
-      return;
-    }
-
-    setIsLocating(true);
-    setLocationError('');
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        
-        // In a real app, you would reverse geocode these coordinates to get an address
-        // For this demo, we'll simulate finding the nearest city
-        simulateReverseGeocoding(latitude, longitude);
-      },
-      (error) => {
-        setIsLocating(false);
-        switch(error.code) {
-          case error.PERMISSION_DENIED:
-            setLocationError('Location access was denied. Please enable location services.');
-            break;
-          case error.POSITION_UNAVAILABLE:
-            setLocationError('Location information is unavailable.');
-            break;
-          case error.TIMEOUT:
-            setLocationError('Location request timed out.');
-            break;
-          default:
-            setLocationError('An unknown error occurred.');
-            break;
-        }
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 60000
+const SearchBar = ({ searchQuery, setSearchQuery, university, setUniversity }) => {
+  // University data structure
+  const universities = {
+    'Lahore': [
+      { 
+        id: 1, 
+        name: 'Lahore College for Women University (LCWU)', 
+        campuses: ['Main Campus', 'City Campus', 'Jail Road Campus']
       }
-    );
+    ],
+    'Islamabad': [
+      { 
+        id: 2, 
+        name: 'Quaid-i-Azam University', 
+        campuses: ['Main Campus', 'New Campus']
+      }
+    ],
+    'Karachi': [
+      { 
+        id: 3, 
+        name: 'University of Karachi', 
+        campuses: ['Main Campus', 'North Campus']
+      }
+    ]
   };
 
-  // Simulate reverse geocoding - in a real app, you would use a geocoding API
-  const simulateReverseGeocoding = (lat, lng) => {
-    // Simulate API call delay
-    setTimeout(() => {
-      setIsLocating(false);
-      
-      // Based on coordinates, determine the nearest major city
-      // This is a simplified simulation - in reality you'd use a proper geocoding service
-      const simulatedCities = ['Islamabad', 'Lahore', 'Karachi', 'Peshawar', 'Quetta'];
-      const randomCity = simulatedCities[Math.floor(Math.random() * simulatedCities.length)];
-      
-      setLocation(`${randomCity}, Pakistan`);
-      setShowLocationDropdown(false);
-    }, 1500);
+  const [showUniversityDropdown, setShowUniversityDropdown] = useState(false);
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedUniversity, setSelectedUniversity] = useState(null);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowUniversityDropdown(false);
+        setSelectedCity('');
+        setSelectedUniversity(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleCitySelect = (city) => {
+    setSelectedCity(city);
   };
 
-  const handleProvinceSelect = (province) => {
-    setSelectedProvince(province);
-    setSelectedArea('');
+  const handleUniversitySelect = (uni) => {
+    setSelectedUniversity(uni);
   };
 
-  const handleAreaSelect = (area) => {
-    setSelectedArea(area);
-    setLocation(`${area}, ${selectedProvince}`);
-    setShowLocationDropdown(false);
+  const handleCampusSelect = (campus) => {
+    setUniversity(`${campus}, ${selectedUniversity.name}`);
+    setShowUniversityDropdown(false);
+    setSelectedCity('');
+    setSelectedUniversity(null);
+  };
+
+  const clearUniversity = () => {
+    setUniversity('');
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
+
+  // Check if a campus is selected
+  const isCampusSelected = (campus) => {
+    return university && university.startsWith(campus);
   };
 
   return (
-    <div className="mb-6">
+    <div className="mb-8">
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row gap-3"
+        className="flex flex-col md:flex-row gap-4"
       >
         {/* Search Input */}
         <div className="relative flex-1">
-          <input
-            type="text"
-            placeholder="Search products, services..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 pr-12 rounded-lg bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF6F61] border border-gray-200"
-          />
-          <FiSearch className="absolute right-4 top-4 text-xl text-gray-400" />
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search textbooks, notes, supplies..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full p-4 pl-12 pr-10 rounded-xl bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#006D77] border border-gray-200 text-gray-700"
+            />
+            <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-xl text-gray-400" />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <FiX className="text-gray-400 hover:text-gray-600" />
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Location Selector */}
-        <div className="relative flex-1">
+        {/* University Selector */}
+        <div className="relative md:w-80" ref={dropdownRef}>
           <button
-            onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-            className="w-full flex items-center justify-between p-4 rounded-lg bg-white shadow-sm border border-gray-200 hover:border-gray-300 text-left"
+            onClick={() => setShowUniversityDropdown(!showUniversityDropdown)}
+            className="w-full flex items-center justify-between p-4 rounded-xl bg-white shadow-sm border border-gray-200 hover:border-gray-300 text-left transition-colors"
           >
-            <div className="flex items-center">
-              <FiMapPin className="text-gray-400 mr-2" />
-              <span>{location || 'Select location in Pakistan'}</span>
+            <div className="flex items-center truncate">
+              <FiMapPin className="text-gray-400 mr-2 flex-shrink-0" />
+              <span className="truncate">{university || 'Select university'}</span>
             </div>
-            <FiChevronDown className={`transition-transform ${showLocationDropdown ? 'rotate-180' : ''}`} />
+            <FiChevronDown className={`flex-shrink-0 transition-transform ${showUniversityDropdown ? 'rotate-180' : ''}`} />
           </button>
 
           <AnimatePresence>
-            {showLocationDropdown && (
+            {showUniversityDropdown && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
-                className="absolute z-50 mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden"
+                className="absolute z-50 mt-2 w-full bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
               >
-                <div className="max-h-96 overflow-y-auto">
-                  {/* GPS Location Button */}
-                  <div className="p-3 border-b">
-                    <button
-                      onClick={getCurrentLocation}
-                      disabled={isLocating}
-                      className={`w-full flex items-center justify-center py-2 px-4 rounded-md ${
-                        isLocating 
-                          ? 'bg-gray-100 text-gray-400' 
-                          : 'bg-[#006D77] text-white hover:bg-[#00565f]'
-                      } transition-colors`}
-                    >
-                      {isLocating ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Detecting location...
-                        </>
-                      ) : (
-                        <>
-                          <FiCrosshair className="mr-2" />
-                          Use my current location
-                        </>
-                      )}
-                    </button>
-                    
-                    {locationError && (
-                      <div className="mt-2 text-sm text-[#FF6F61] bg-[#FF6F61]/10 p-2 rounded">
-                        {locationError}
-                      </div>
+                <div className="max-h-80 overflow-y-auto">
+                  {/* Header with clear button */}
+                  <div className="p-3 bg-gray-50 border-b flex justify-between items-center">
+                    <h4 className="font-medium text-gray-700">Select University</h4>
+                    {university && (
+                      <button 
+                        onClick={clearUniversity}
+                        className="text-sm text-[#006D77] hover:text-[#00565f] font-medium"
+                      >
+                        Clear
+                      </button>
                     )}
-                    
-                    <div className="mt-3 text-xs text-gray-500 text-center">
-                      Or select manually below
-                    </div>
                   </div>
 
-                  {!selectedProvince ? (
+                  {!selectedCity ? (
                     <div>
-                      <div className="p-3 bg-gray-50 border-b">
-                        <h4 className="font-medium text-gray-700">Select Province</h4>
-                      </div>
-                      {Object.keys(pakistanProvinces).map((province) => (
+                      {Object.keys(universities).map((city) => (
                         <button
-                          key={province}
-                          onClick={() => handleProvinceSelect(province)}
-                          className="w-full p-3 text-left hover:bg-gray-50 border-b last:border-b-0 flex justify-between items-center transition-colors"
+                          key={city}
+                          onClick={() => handleCitySelect(city)}
+                          className="w-full p-3 text-left hover:bg-gray-50 border-b last:border-b-0 flex justify-between items-center transition-colors text-gray-700"
                         >
-                          <span>{province}</span>
+                          <span>{city}</span>
                           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                            {pakistanProvinces[province].length} areas
+                            {universities[city].length} universities
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : !selectedUniversity ? (
+                    <div>
+                      {/* Back button */}
+                      <div className="p-3 bg-gray-50 border-b flex items-center">
+                        <button 
+                          onClick={() => setSelectedCity('')}
+                          className="mr-2 p-1 rounded-full hover:bg-gray-200 transition-colors"
+                        >
+                          <FiChevronDown className="transform rotate-90" />
+                        </button>
+                        <h4 className="font-medium text-gray-700">{selectedCity}</h4>
+                      </div>
+                      
+                      {/* Universities in selected city */}
+                      {universities[selectedCity].map((uni) => (
+                        <button
+                          key={uni.id}
+                          onClick={() => handleUniversitySelect(uni)}
+                          className="w-full p-3 text-left hover:bg-gray-50 border-b last:border-b-0 flex justify-between items-center transition-colors text-gray-700"
+                        >
+                          <span className="text-left">{uni.name}</span>
+                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                            {uni.campuses.length} campuses
                           </span>
                         </button>
                       ))}
                     </div>
                   ) : (
                     <div>
+                      {/* Back button */}
                       <div className="p-3 bg-gray-50 border-b flex items-center">
                         <button 
-                          onClick={() => setSelectedProvince('')}
+                          onClick={() => setSelectedUniversity(null)}
                           className="mr-2 p-1 rounded-full hover:bg-gray-200 transition-colors"
                         >
                           <FiChevronDown className="transform rotate-90" />
                         </button>
-                        <h4 className="font-medium text-gray-700">{selectedProvince}</h4>
+                        <h4 className="font-medium text-gray-700">{selectedUniversity.name}</h4>
                       </div>
-                      {pakistanProvinces[selectedProvince].map((area) => (
-                        <button
-                          key={area}
-                          onClick={() => handleAreaSelect(area)}
-                          className={`w-full p-3 text-left hover:bg-gray-50 border-b last:border-b-0 transition-colors ${
-                            location.includes(area) ? 'bg-[#FF6F61]/10 text-[#FF6F61] font-medium' : ''
-                          }`}
-                        >
-                          <div className="flex items-center">
-                            <FiMapPin className="mr-2 text-gray-400" />
-                            {area}
-                          </div>
-                        </button>
-                      ))}
+                      
+                      {/* Campuses for selected university */}
+                      {selectedUniversity.campuses.map((campus) => {
+                        const isSelected = isCampusSelected(campus);
+                        return (
+                          <button
+                            key={campus}
+                            onClick={() => handleCampusSelect(campus)}
+                            className={`w-full p-3 text-left hover:bg-gray-50 border-b last:border-b-0 transition-colors flex items-center ${
+                              isSelected ? 'bg-[#006D77]/10 text-[#006D77] font-medium' : 'text-gray-700'
+                            }`}
+                          >
+                            {isSelected ? (
+                              <FiCheck className="mr-2 text-[#006D77] flex-shrink-0" />
+                            ) : (
+                              <FiMapPin className="mr-2 text-gray-400 flex-shrink-0" />
+                            )}
+                            {campus}
+                          </button>
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -215,6 +223,18 @@ const SearchBar = ({ searchQuery, setSearchQuery, location, setLocation }) => {
             )}
           </AnimatePresence>
         </div>
+      </motion.div>
+
+      {/* University Marketplace Tagline */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="mt-4 text-center md:text-left"
+      >
+        <p className="text-sm text-gray-500">
+          Connect with students at your university • Buy and sell academic materials
+        </p>
       </motion.div>
     </div>
   );

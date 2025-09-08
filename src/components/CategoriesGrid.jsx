@@ -20,14 +20,14 @@ const CategoriesSection = () => {
       tagline: 'Holographic creations',
       color: 'from-[#006D77]/20 to-[#006D77]/10'
     },
-    { 
-      id: 'craft', 
-      name: 'Bio-Stitching', 
-      icon: <FiScissors size={20} />,
-      size: 'medium',
-      tagline: 'Living materials',
-      color: 'from-[#FF6F61]/15 to-[#FF6F61]/05'
-    },
+    // { 
+    //   id: 'craft', 
+    //   name: 'Bio-Stitching', 
+    //   icon: <FiScissors size={20} />,
+    //   size: 'medium',
+    //   tagline: 'Living materials',
+    //   color: 'from-[#FF6F61]/15 to-[#FF6F61]/05'
+    // },
     { 
       id: 'pets', 
       name: 'Smart Pets', 
@@ -37,8 +37,8 @@ const CategoriesSection = () => {
       color: 'from-[#006D77]/15 to-[#006D77]/05'
     },
     { 
-      id: 'real-estate', 
-      name: 'Meta Properties', 
+      id: 'Electronics ', 
+      name: 'Electronics', 
       icon: <FiHome size={20} />,
       size: 'small',
       color: 'from-[#333333]/10 to-[#333333]/05'

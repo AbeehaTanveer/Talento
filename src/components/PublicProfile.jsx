@@ -411,64 +411,77 @@ const FullWidthProfilePage = () => {
       {/* Main Content */}
       <main className="px-4 sm:px-6 lg:px-8 py-6">
         {/* Hero Section */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
-          <div className="flex flex-col md:flex-row items-start gap-6">
-            <div className="flex-shrink-0">
-              <img
-                src={userData.avatar}
-                alt={userData.name}
-                className="w-24 h-24 rounded-full object-cover border-4 border-[#FFF6E5]"
-              />
-            </div>
-            
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h1 className="text-2xl font-bold text-[#333333]">{userData.name}</h1>
-                {userData.isVerified && (
-                  <span className="bg-[#006D77] text-white p-1 rounded-full">
-                    <CheckCircle size={16} />
-                  </span>
-                )}
-                {userData.isOwnProfile && (
-                  <button className="ml-auto bg-[#FFF6E5] text-[#FF6F61] px-4 py-1 rounded-lg font-medium hover:bg-[#FF6F61] hover:text-white transition-colors flex items-center gap-2">
-                    <Edit size={14} />
-                    Edit Profile
-                  </button>
-                )}
-              </div>
-              
-              <p className="text-lg text-[#FF6F61] font-medium mb-2">{userData.tagline}</p>
-              
-              <div className="flex items-center gap-4 text-[#666666] text-sm mb-4">
-                <span className="flex items-center gap-1">
-                  <MapPin size={14} />
-                  {userData.location}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Calendar size={14} />
-                  Joined {userData.joinDate}
-                </span>
-              </div>
-              
-              <div className="flex flex-wrap gap-3">
-                <button className="bg-[#FF6F61] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#e55a50] transition-colors flex items-center gap-2">
-                  <MessageSquare size={16} />
-                  Message Seller
-                </button>
-                <button className="bg-white text-[#333333] border border-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
-                  <Eye size={16} />
-                  View Listings
-                </button>
-                {userData.isOwnProfile && (
-                  <button className="bg-white text-[#333333] border border-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center gap-2">
-                    <Heart size={16} />
-                    My Favorites
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+    <div className="bg-white rounded-2xl shadow-sm p-6 mb-6">
+  <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+    
+    {/* Avatar */}
+    <div className="flex-shrink-0 mb-4 md:mb-0">
+      <img
+        src={userData.avatar}
+        alt={userData.name}
+        className="w-28 h-28 rounded-full object-cover border-4 border-[#FFF6E5] shadow-md"
+      />
+    </div>
+
+    {/* Content */}
+    <div className="flex-1 w-full text-center md:text-left">
+      {/* Name + Verified + Edit */}
+      <div className="flex flex-col md:flex-row md:items-center gap-2 mb-3">
+        <div className="flex justify-center md:justify-start items-center gap-2">
+          <h1 className="text-2xl font-bold text-[#333333]">{userData.name}</h1>
+          {userData.isVerified && (
+            <span className="bg-[#006D77] text-white p-1 rounded-full">
+              <CheckCircle size={16} />
+            </span>
+          )}
         </div>
+
+        {userData.isOwnProfile && (
+          <div className="flex justify-center md:ml-auto">
+            <button className="bg-[#FFF6E5] text-[#FF6F61] px-4 py-1 rounded-lg font-medium hover:bg-[#FF6F61] hover:text-white transition-colors flex items-center gap-2 text-sm md:text-base">
+              <Edit size={14} />
+              Edit Profile
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Tagline */}
+      <p className="text-lg text-[#FF6F61] font-medium mb-2">{userData.tagline}</p>
+
+      {/* Location + Join Date */}
+      <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-2 text-[#666666] text-sm mb-4">
+        <span className="flex items-center justify-center gap-1">
+          <MapPin size={14} />
+          {userData.location}
+        </span>
+        <span className="flex items-center justify-center gap-1">
+          <Calendar size={14} />
+          Joined {userData.joinDate}
+        </span>
+      </div>
+
+      {/* Buttons */}
+      <div className="flex flex-col md:flex-row flex-wrap gap-3">
+        <button className="w-full md:w-auto bg-[#FF6F61] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#e55a50] transition-colors flex items-center justify-center gap-2">
+          <MessageSquare size={16} />
+          Message Seller
+        </button>
+        <button className="w-full md:w-auto bg-white text-[#333333] border border-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+          <Eye size={16} />
+          View Listings
+        </button>
+        {userData.isOwnProfile && (
+          <button className="w-full md:w-auto bg-white text-[#333333] border border-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+            <Heart size={16} />
+            My Favorites
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Column - Profile Card */}
