@@ -149,10 +149,10 @@ const profileMenu = [
           <div className="flex-shrink-0 flex items-center">
             <a href="/" className="flex items-center space-x-2">
               <div className="w-10 h-10 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold text-xl">
-                T
+                F
               </div>
               <span className="text-2xl font-light text-[#333333] hidden sm:block">
-                <span className="font-medium text-teal-600">Talento</span>
+                <span className="font-medium text-teal-600">Flick</span>
               </span>
             </a>
           </div>
@@ -213,11 +213,11 @@ const profileMenu = [
           {/* Auth Section */}
           <div className="hidden md:flex items-center space-x-3">
             {/* Help Button */}
-            <Link to="/trivia">
+            {/* <Link to="/trivia">
               <button className="flex items-center justify-center w-9 h-9 rounded-full duration-200 text-teal-600 hover:bg-teal-50">
                 <MdGamepad className="w-5 h-5" />
               </button>
-            </Link>
+            </Link> */}
 
             {/* Notifications */}
             <div className="relative" ref={notificationsRef}>

@@ -63,7 +63,7 @@ const PendingSeller = () => {
           <div className="bg-[#FDF6F2] rounded-2xl p-6 text-center border border-[#FF6F61]/20 shadow-sm">
             <h3 className="text-xl font-semibold text-[#006D77] mb-3">Fairness matters.</h3>
             <p className="text-[#333]">
-              Take your time, but please try to respond. Balanced feedback helps keep Talento trusted.
+              Take your time, but please try to respond. Balanced feedback helps keep Flick trusted.
             </p>
           </div>
         </motion.div>

@@ -190,6 +190,7 @@ const ListingsGrid = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
+               <Link to={`/listingdetails`}> 
             <div className="aspect-square w-full overflow-hidden bg-gray-100 rounded-xl">
               <img
                 src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=800&auto=format&fit=crop&q=80"
@@ -205,6 +206,7 @@ const ListingsGrid = () => {
               <h3 className="text-base font-bold text-white">Engineering References</h3>
               <p className="text-[#FF6F61] font-medium text-sm mt-1">From PKR0.025</p>
             </div>
+            </Link>
           </motion.div>
 
           {/* Medical Textbooks */}
@@ -214,6 +216,8 @@ const ListingsGrid = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
+               <Link to={`/listingdetails`}> 
+            
             <div className="aspect-square w-full overflow-hidden bg-gray-100 rounded-xl">
               <img
                 src="https://i0.wp.com/onlinebookshop.pk/wp-content/uploads/2021/03/Medical-Health-Techniyion-By-Dr.-Muhammad-Iqbal.jpg?fit=1500%2C1150&ssl=1?w=800&auto=format&fit=crop&q=80"
@@ -229,6 +233,7 @@ const ListingsGrid = () => {
               <h3 className="text-base font-bold text-white">Medical References</h3>
               <p className="text-[#FF6F61] font-medium text-sm mt-1">From PKR0.035</p>
             </div>
+            </Link>
           </motion.div>
 
 
@@ -239,6 +244,8 @@ const ListingsGrid = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
+
+               <Link to={`/listingdetails`}> 
             <div className="aspect-square w-full overflow-hidden bg-gray-100 rounded-xl">
               <img
                 src="https://i0.wp.com/onlinebookshop.pk/wp-content/uploads/2021/03/Medical-Health-Techniyion-By-Dr.-Muhammad-Iqbal.jpg?fit=1500%2C1150&ssl=1?w=800&auto=format&fit=crop&q=80"
@@ -254,6 +261,7 @@ const ListingsGrid = () => {
               <h3 className="text-base font-bold text-white">Medical References</h3>
               <p className="text-[#FF6F61] font-medium text-sm mt-1">From PKR0.035</p>
             </div>
+            </Link>
           </motion.div>
           {/* Business Books */}
           <motion.div 
@@ -262,6 +270,7 @@ const ListingsGrid = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
+               <Link to={`/listingdetails`}> 
             <div className="aspect-square w-full overflow-hidden bg-gray-100 rounded-xl">
               <img
                 src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80"
@@ -277,6 +286,7 @@ const ListingsGrid = () => {
               <h3 className="text-base font-bold text-white">Business Studies</h3>
               <p className="text-[#FF6F61] font-medium text-sm mt-1">From PKR0.020</p>
             </div>
+            </Link>
           
           </motion.div>
         </div>

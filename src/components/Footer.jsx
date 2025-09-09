@@ -10,10 +10,10 @@ const Footer = () => {
           <div className="flex flex-col space-y-4">
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-[#006D77] font-bold text-xl">
-                T
+                F
               </div>
               <span className="text-2xl font-light">
-                <span className="font-medium">Talento</span>
+                <span className="font-medium">Flick</span>
               </span>
             </div>
             <p className="text-white/80 text-sm max-w-xs">
@@ -21,7 +21,7 @@ const Footer = () => {
             </p>
             <div className="pt-4">
               <p className="text-xs text-white/60">
-                © {new Date().getFullYear()} Talento. All rights reserved.
+                © {new Date().getFullYear()} Flick. All rights reserved.
               </p>
             </div>
           </div>

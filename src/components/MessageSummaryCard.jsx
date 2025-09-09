@@ -6,7 +6,7 @@ const MessageSummaryCard = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      user: "Alex Morgan",
+      user: "onn",
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80",
       product: "Vintage Leather Jacket",
       message: "Hi, is this still available? I'm very interested!",
@@ -15,16 +15,16 @@ const MessageSummaryCard = () => {
     },
     {
       id: 2,
-      user: "Taylor Kim",
+      user: " Kim",
       avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1888&q=80",
       product: "Designer Handbag",
-      message: "Could you do $250? That's my final offer.",
+      message: "Could you do 250? That's my final offer.",
       timestamp: "15 min ago",
       unread: true
     },
     {
       id: 3,
-      user: "Jordan Smith",
+      user: "Jordan ",
       avatar: "https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1899&q=80",
       product: "Limited Edition Sneakers",
       message: "Thanks for the quick shipping! The item arrived perfectly.",
@@ -33,7 +33,7 @@ const MessageSummaryCard = () => {
     },
     {
       id: 4,
-      user: "Riley Johnson",
+      user: "Aiza ",
       avatar: "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80",
       product: "Antique Camera",
       message: "Do you have more photos of the item from different angles?",

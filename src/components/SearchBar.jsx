@@ -8,24 +8,12 @@ const SearchBar = ({ searchQuery, setSearchQuery, university, setUniversity }) =
     'Lahore': [
       { 
         id: 1, 
-        name: 'Lahore College for Women University (LCWU)', 
+        name: 'Lahore College for Women University', 
         campuses: ['Main Campus', 'City Campus', 'Jail Road Campus']
       }
     ],
-    'Islamabad': [
-      { 
-        id: 2, 
-        name: 'Quaid-i-Azam University', 
-        campuses: ['Main Campus', 'New Campus']
-      }
-    ],
-    'Karachi': [
-      { 
-        id: 3, 
-        name: 'University of Karachi', 
-        campuses: ['Main Campus', 'North Campus']
-      }
-    ]
+
+  
   };
 
   const [showUniversityDropdown, setShowUniversityDropdown] = useState(false);
@@ -178,7 +166,7 @@ const SearchBar = ({ searchQuery, setSearchQuery, university, setUniversity }) =
                         >
                           <span className="text-left">{uni.name}</span>
                           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                            {uni.campuses.length} campuses
+                        campuses
                           </span>
                         </button>
                       ))}
