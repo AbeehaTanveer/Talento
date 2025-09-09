@@ -63,7 +63,7 @@ const HeroBanner = () => {
           transition={{ delay: 0.7, duration: 0.7 }}
           className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start"
         >
-          <Link to={"/trivia"}>
+          {/* <Link to={"/trivia"}> */}
           <motion.button
           whileHover={{ scale: 1.03, boxShadow: '0 8px 20px rgba(0, 109, 119, 0.2)' }}
           whileTap={{ scale: 0.97 }}
@@ -71,7 +71,7 @@ const HeroBanner = () => {
           >
             Daily Streak <FiArrowRight />
           </motion.button>
-            </Link>
+            {/* </Link> */}
           
           <motion.button
             whileHover={{ scale: 1.03, backgroundColor: '#f8fafc' }}

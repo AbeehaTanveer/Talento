@@ -39,7 +39,7 @@ const TagsSeller = () => {
     animate={{ opacity: 1, y: 0 }}
     className="text-4xl font-extrabold mb-4 z-20"
   >
-  Talento
+  Flick
   </motion.h1>
 
 
@@ -92,7 +92,7 @@ const TagsSeller = () => {
                 Report an Issue
               </h2>
               <p className="text-[#555] mb-8">
-                Help us keep Talento safe by reporting problems with sellers.
+                Help us keep Flick safe by reporting problems with sellers.
               </p>
 
               <div className="grid grid-cols-1 gap-3">
@@ -143,7 +143,7 @@ const TagsSeller = () => {
               </h2>
               <p className="text-[#555] mb-6">
                 Your report has been submitted successfully. Together we’re
-                keeping Talento safe.
+                keeping Flick safe.
               </p>
               <motion.button
                 whileHover={{ scale: 1.02 }}

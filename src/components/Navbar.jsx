@@ -148,11 +148,11 @@ const profileMenu = [
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <a href="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-lg bg-teal-600 flex items-center justify-center text-white font-bold text-xl">
+              <div className="w-10 h-10 rounded-lg bg-[#006D77] flex items-center justify-center text-white font-bold text-xl">
                 F
               </div>
               <span className="text-2xl font-light text-[#333333] hidden sm:block">
-                <span className="font-medium text-teal-600">Flick</span>
+                <span className="font-medium text-[#006D77]">Flick</span>
               </span>
             </a>
           </div>
@@ -281,19 +281,19 @@ const profileMenu = [
 
             {isLoggedIn ? (
               <button className="flex items-center space-x-2">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white">
+                <div className="w-9 h-9 rounded-full  bg-[#006D77]0 flex items-center justify-center text-white">
                   <FiUser className="w-5 h-5" />
                 </div>
               </button>
             ) : (
               <div className="flex space-x-3">
                 <Link to="/login">
-                  <button className="px-4 py-2 rounded-lg text-teal-600 hover:bg-teal-50 transition-colors duration-200 text-sm font-medium">
+                  <button className="px-4 py-2 rounded-lg tbg-[#006D77] hover:bg-teal-50 transition-colors duration-200 text-sm font-medium">
                     Login
                   </button>
                 </Link>
                 <Link to="/register">
-                  <button className="px-4 py-2 rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors duration-200 text-sm font-medium shadow-sm">
+                  <button className="px-4 py-2 rounded-lg bg-[#006D77] text-white hover:bg-teal-700 transition-colors duration-200 text-sm font-medium shadow-sm">
                     Register
                   </button>
                 </Link>
@@ -392,15 +392,7 @@ const profileMenu = [
   </div>
 )}
 
-              <button
-          
-              className="flex items-center justify-center w-9 h-9 rounded-full duration-200 text-teal-600 hover:bg-teal-50 relative"
-            >
-                <Link to="/trivia">
-                <MdGamepad className="w-5 h-5" />
-            </Link>
-              </button>
-           
+            
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
