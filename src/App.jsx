@@ -13,7 +13,6 @@ import Listing from "./pages/Listing";
 import ListingDetails from "./pages/ListingDetails";
 import CreateListing from "./pages/CreateListing";
 import EditListing from "./pages/EditListing";
-import SellerProfile from "./pages/Dashboard"; // <-- Dashboard Layout
 import Categories from "./pages/Categories";
 import Favorites from "./pages/Favorites";
 import Chat from "./pages/Chat";
@@ -29,6 +28,7 @@ import BuyerProfilePage from "./pages/BuyerProfile";
 import PublicProfile from "./components/PublicProfile";
 import PurchaseHistory from "./components/PurchaseHistory";
 import Dashboard from "./pages/Dashboard";
+import VerificationPage from "./pages/VerificationPage";
 
 // ✅ Wrapper so we can use useLocation inside
 function Layout() {
@@ -43,7 +43,7 @@ function Layout() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/registers" element={<Register />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/listings" element={<Listing />} />
           <Route path="/listingdetails" element={<ListingDetails />} />
           <Route path="/create-listing" element={<CreateListing />} />
@@ -62,6 +62,7 @@ function Layout() {
           <Route path="/profile" element={<PublicProfile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/purchases" element={<PurchaseHistory />} />
+          <Route path="/Verified" element={<VerificationPage />} />
 
        
 

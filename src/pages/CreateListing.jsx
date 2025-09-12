@@ -1,7 +1,17 @@
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Mock user data - in a real app, this would come from your authentication context
+const mockUser = {
+  id: 1,
+  name: "John Doe",
+  listings_count: 1, // Change this to test different states: 0, 1, or 2+
+  is_verified: false
+};
+
 const CreateListingScreen = () => {
+  const [user] = useState(mockUser);
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
   const [listing, setListing] = useState({
     title: '',
     description: '',
@@ -15,7 +25,7 @@ const CreateListingScreen = () => {
   });
 
   const [activePreviewIndex, setActivePreviewIndex] = useState(0);
-  const [mediaType, setMediaType] = useState('image'); // 'image' or 'video'
+  const [mediaType, setMediaType] = useState('image');
   const imageInputRef = useRef(null);
   const videoInputRef = useRef(null);
 
@@ -39,7 +49,7 @@ const CreateListingScreen = () => {
       const videoUrl = URL.createObjectURL(files[0]);
       setListing(prev => ({ 
         ...prev, 
-        videos: [...prev.videos, videoUrl].slice(0, 1) // Limit to 1 video
+        videos: [...prev.videos, videoUrl].slice(0, 1)
       }));
     }
   };
@@ -81,8 +91,21 @@ const CreateListingScreen = () => {
   };
 
   const handlePublish = () => {
+    // Check if user needs verification
+    if (user.listings_count >= 2 && !user.is_verified) {
+      setShowVerificationModal(true);
+      return;
+    }
+    
     console.log('Publishing listing:', listing);
     alert('Listing published successfully!');
+    // In a real app, you would increment the user's listings_count here
+  };
+
+  const handleVerifyNow = () => {
+    console.log('Redirecting to verification process');
+    // In a real app, this would navigate to the verification page
+    setShowVerificationModal(false);
   };
 
   const allMedia = [...listing.images, ...listing.videos];
@@ -93,11 +116,125 @@ const CreateListingScreen = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F5F5] flex flex-col mt-16">
- 
+      {/* Verification Nudge Bar */}
+      <AnimatePresence>
+        {!user.is_verified && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="bg-white border-b border-gray-200"
+          >
+            <div className="max-w-7xl mx-auto px-4 py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  {user.listings_count === 0 ? (
+                    <>
+                      <span className="text-2xl mr-2">🎉</span>
+                      <p className="text-sm text-gray-700">
+                        Welcome! You can post <span className="font-semibold">2 free listings</span> without verification. 
+                        <span className="font-semibold text-[#006D77]"> Verified sellers get 3× more views.</span>
+                      </p>
+                    </>
+                  ) : user.listings_count === 1 ? (
+                    <>
+                      <span className="text-2xl mr-2">✅</span>
+                      <p className="text-sm text-gray-700">
+                        Great! <span className="font-semibold">1 listing live</span>. Verify now to unlock 
+                        <span className="font-semibold text-[#006D77]"> unlimited listings and earn a trusted badge.</span>
+                      </p>
+                    </>
+                  ) : null}
+                </div>
+                
+                {user.listings_count < 2 && (
+                  <button
+                    onClick={handleVerifyNow}
+                    className="px-4 py-2 bg-white border border-[#006D77] text-[#006D77] rounded-lg text-sm font-medium hover:bg-[#006D77] hover:text-white transition-colors"
+                  >
+                    Verify Now
+                  </button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Verification Modal */}
+      <AnimatePresence>
+        {showVerificationModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full"
+            >
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-[#006D77] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Verification Required</h3>
+                <p className="text-gray-600">
+                  You've used your free 2 listings. To post more and keep our marketplace safe, please verify your profile.
+                </p>
+              </div>
+              
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                <h4 className="font-medium text-gray-900 mb-2">Verification benefits:</h4>
+                <ul className="text-sm text-gray-600 space-y-1">
+                  <li className="flex items-center">
+                    <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Unlimited listings
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Trusted seller badge
+                  </li>
+                  <li className="flex items-center">
+                    <svg className="w-4 h-4 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    3× more views on your listings
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleVerifyNow}
+                  className="w-full py-3 bg-[#006D77] text-white rounded-lg font-medium hover:bg-[#00525a] transition-colors"
+                >
+                  Verify Now
+                </button>
+                <button
+                  onClick={() => setShowVerificationModal(false)}
+                  className="w-full py-3 bg-white border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main Content */}
-    <main className="flex flex-col lg:flex-row flex-1 p-6 gap-6">
+      <main className="flex flex-col lg:flex-row flex-1 p-6 gap-6">
         {/* Left Column - Form (70%) */}
-    <div className="w-full lg:w-7/12 space-y-6">
+        <div className="w-full lg:w-7/12 space-y-6">
           {/* Security Alert */}
           <div className="bg-[#FFF6E5] border-l-4 border-[#FF6F61] p-4 rounded-lg shadow-sm">
             <div className="flex items-start">
@@ -107,13 +244,13 @@ const CreateListingScreen = () => {
               <div>
                 <h4 className="font-medium text-[#333333]">Reminder</h4>
                 <p className="text-sm text-[#333333]/80 mt-1">
-                Add a Video can make you standout and increase your chances of selling.
+                  Add a Video can make you standout and increase your chances of selling.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Basic Info Section */}
+               {/* Basic Info Section */}
           <section className="bg-white rounded-xl shadow-sm p-6">
             <h2 className="text-xl font-semibold text-[#006D77] mb-4">Basic Info</h2>
             <div className="space-y-4">
@@ -370,20 +507,20 @@ const CreateListingScreen = () => {
             </div>
           </section>
 
-  
+          
         </div>
 
-   
-  {/* Right Column - Preview (30%) */}
-  <div className="w-full lg:w-5/12">
-   {/* Separation for mobile */}
-  <div className="block lg:hidden my-8 border-t border-[#e0e0e0] pt-6">
-    <h2 className="text-lg font-semibold text-[#006D77] mb-4 text-center">
-      Live Preview
-    </h2>
-  </div>
-    <div className="sticky top-6">
-      <div className="bg-white rounded-xl shadow-sm p-6">
+        {/* Right Column - Preview (30%) */}
+        <div className="w-full lg:w-5/12">
+          {/* Separation for mobile */}
+          <div className="block lg:hidden my-8 border-t border-[#e0e0e0] pt-6">
+            <h2 className="text-lg font-semibold text-[#006D77] mb-4 text-center">
+              Live Preview
+            </h2>
+          </div>
+          
+          <div className="sticky top-6">
+            <div className="bg-white rounded-xl shadow-sm p-6">
         <h2 className="text-xl font-semibold text-[#006D77] mb-4">Listing Preview</h2>
 
         {/* Main Preview Area */}
@@ -532,26 +669,35 @@ const CreateListingScreen = () => {
         </div>
       </div>
 
-      {/* Publish Button (both mobile + desktop) */}
-      <div className="mt-4 bg-white p-4 rounded-xl shadow-sm border border-[#F5F5F5]">
-        <button
-          onClick={handlePublish}
-          className="w-full py-3 bg-[#FF6F61] text-white rounded-lg font-medium hover:bg-[#FF6F61]/90 transition-colors"
-          disabled={
-            !listing.title ||
-            !listing.description ||
-            !listing.price ||
-            !listing.category
-          }
-        >
-          Publish Listing
-        </button>
-      </div>
-    </div>
-  </div>
-</main>
+            {/* Publish Button */}
+            <div className="mt-4 bg-white p-4 rounded-xl shadow-sm border border-[#F5F5F5]">
+              <button
+                onClick={handlePublish}
+                className="w-full py-3 bg-[#FF6F61] text-white rounded-lg font-medium hover:bg-[#FF6F61]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={
+                  !listing.title ||
+                  !listing.description ||
+                  !listing.price ||
+                  !listing.category
+                }
+              >
+                {user.listings_count >= 2 && !user.is_verified ? 'Verify to Publish' : 'Publish Listing'}
+              </button>
+              
+              {/* Listing counter for unverified users */}
+              {!user.is_verified && (
+                <p className="text-xs text-center text-gray-500 mt-2">
+                  {user.listings_count === 0 ? '2 free listings remaining' : 
+                   user.listings_count === 1 ? '1 free listing remaining' : 
+                   'No free listings remaining'}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
 
-      {/* Footer */}
+      {/* Footer remains the same */}
       <footer className="bg-white border-t border-[#F5F5F5] py-4 px-6">
         <div className="flex justify-between items-center">
           <button className="text-[#006D77] hover:text-[#006D77]/80 flex items-center">

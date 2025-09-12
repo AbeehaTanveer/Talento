@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, ChevronRight, Clock } from "lucide-react";
+
+import { FiChevronRight, FiClock, FiMessageSquare } from "react-icons/fi";
 
 const MessageSummaryCard = () => {
   const [messages, setMessages] = useState([
@@ -63,7 +64,7 @@ const MessageSummaryCard = () => {
           )}
         </div>
         <button className="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center transition-colors">
-          View all <ChevronRight size={16} className="ml-1" />
+          View all <FiChevronRight size={16} className="ml-1" />
         </button>
       </div>
 
@@ -97,7 +98,7 @@ const MessageSummaryCard = () => {
                     )}
                   </div>
                   <div className="flex items-center text-xs text-gray-400 whitespace-nowrap ml-2">
-                    <Clock size={12} className="mr-1" />
+                    <FiClock size={12} className="mr-1" />
                     {msg.timestamp}
                   </div>
                 </div>
@@ -110,7 +111,7 @@ const MessageSummaryCard = () => {
         ) : (
           // Empty State
           <div className="text-center py-8">
-            <MessageSquare size={48} className="mx-auto text-gray-300 mb-3" />
+            <FiMessageSquare size={48} className="mx-auto text-gray-300 mb-3" />
             <p className="text-gray-500 text-sm">
               No messages yet. Start chatting with buyers and sellers!
             </p>

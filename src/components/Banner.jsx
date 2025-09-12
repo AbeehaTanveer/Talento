@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { FiBook, FiDollarSign, FiUsers, FiArrowRight, FiShield, FiTrendingUp } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { FiBook, FiArrowRight } from 'react-icons/fi';
 
 const HeroBanner = () => {
   return (

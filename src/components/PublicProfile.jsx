@@ -1,30 +1,10 @@
 import { useState } from "react";
-import {
-  Star,
-  MapPin,
-  Calendar,
-  CheckCircle,
-  AlertTriangle,
-  XCircle,
-  MessageSquare,
-  Eye,
-  Edit,
-  Heart,
-  ShoppingBag,
-  ChevronDown,
-  ChevronUp,
-  Search,
-  Bell,
-  Menu,
-  X,
 
-  User,
-Shield,
-
-  CheckCircle2,
-  Check,
-  Quote
-} from "lucide-react";
+import { FiAlertTriangle, FiBell, FiCalendar, FiCheck, FiCheckCircle, FiCheckSquare, FiChevronDown, FiChevronUp, FiEdit, FiEdit3, FiEye, FiHeart, FiMapPin, FiMenu, FiMessageSquare, FiSearch, FiShield, FiShieldOff, FiShoppingBag, FiStar, FiXCircle } from "react-icons/fi";
+import { IoIosQuote, IoIosSearch, IoMdCalendar, IoMdCheckmarkCircle } from "react-icons/io";
+import { FaCheckCircle, FaMapPin, FaRegHeart, FaShoppingBag, FaUser } from "react-icons/fa";
+import { MdLocalShipping } from "react-icons/md";
+import { FaRegMessage } from "react-icons/fa6";
 
 const FullWidthProfilePage = () => {
   const [activeTab, setActiveTab] = useState("listings");
@@ -146,7 +126,7 @@ const FullWidthProfilePage = () => {
     return (
       <div className="flex">
         {[1, 2, 3, 4, 5].map((star) => (
-          <Star
+          <FiStar
             key={star}
             size={16}
             className={`${star <= rating ? 'text-[#FF6F61] fill-[#FF6F61]' : 'text-gray-300'}`}
@@ -169,14 +149,14 @@ const FullWidthProfilePage = () => {
                   className="md:hidden p-2 rounded-md text-gray-600"
                   onClick={() => setIsSidebarOpen(true)}
                 >
-                  <Menu size={24} />
+                  <FiMenu size={24} />
                 </button>
                 <h1 className="text-xl font-bold text-[#333333] ml-2">Marketplace</h1>
               </div>
               
               <div className="hidden md:block flex-1 max-w-xl mx-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <IoIosSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type="text"
                     placeholder="Search products, brands, and categories..."
@@ -187,7 +167,7 @@ const FullWidthProfilePage = () => {
               
               <div className="flex items-center space-x-4">
                 <button className="p-2 rounded-md text-gray-600 hover:bg-gray-100 relative">
-                  <Bell size={20} />
+                  <FiBell size={20} />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
                 </button>
                 <div className="flex items-center space-x-2 cursor-pointer">
@@ -219,7 +199,7 @@ const FullWidthProfilePage = () => {
               className="w-32 h-32 rounded-xl object-cover border-4 border-[#FFF6E5] shadow-lg"
             />
             <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-[#006D77] rounded-lg flex items-center justify-center shadow-md border-2 border-white">
-              <Shield size={16} className="text-white" />
+              <FiShield size={16} className="text-white" />
             </div>
           </div>
           <div className="mt-4 flex flex-col items-center">
@@ -237,21 +217,23 @@ const FullWidthProfilePage = () => {
               <h1 className="text-3xl font-bold text-[#333333] mb-2">{userData.name}</h1>
               <div className="flex flex-wrap items-center gap-3 text-[#666666]">
                 <span className="flex items-center gap-1 px-3 py-1.5 bg-[#FFF6E5] rounded-lg text-sm">
-                  <MapPin size={14} className="text-[#FF6F61]" />
+                  <FiMapPin size={14} className="text-[#FF6F61]" />
                   {userData.location}
                 </span>
                 <span className="flex items-center gap-1 px-3 py-1.5 bg-[#FFF6E5] rounded-lg text-sm">
-                  <Calendar size={14} className="text-[#FF6F61]" />
+                  <IoMdCalendar size={14} className="text-[#FF6F61]" />
                   Joined {userData.joinDate}
                 </span>
                 <span className="flex items-center gap-1 px-3 py-1.5 bg-[#FFF6E5] rounded-lg text-sm">
-                  <CheckCircle2 size={14} className="text-[#006D77]" />
+                  <FaCheckCircle  size={14} className="text-[#006D77]" />
+
+                  {/* remain */}
                   12 Successful Transactions
                 </span>
               </div>
             </div>
             <button className="bg-[#FF6F61] text-white px-6 py-3 rounded-xl font-medium hover:bg-[#e55a50] transition-colors flex items-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all min-w-fit">
-              <MessageSquare size={18} />
+              <FiMessageSquare size={18} />
               Message User
             </button>
           </div>
@@ -275,7 +257,7 @@ const FullWidthProfilePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="bg-white rounded-2xl shadow-sm p-8 text-center border border-gray-100 hover:shadow-md transition-shadow">
           <div className="w-16 h-16 bg-[#FFF6E5] rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Shield size={28} className="text-[#006D77]" />
+            <FiShieldOff size={28} className="text-[#006D77]" />
           </div>
           <h3 className="font-semibold text-[#333333] mb-3 text-lg">Verified Identity</h3>
           <p className="text-sm text-[#666666] leading-relaxed">
@@ -285,7 +267,7 @@ const FullWidthProfilePage = () => {
 
         <div className="bg-white rounded-2xl shadow-sm p-8 text-center border border-gray-100 hover:shadow-md transition-shadow">
           <div className="w-16 h-16 bg-[#FFF6E5] rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Heart size={28} className="text-[#FF6F61]" />
+            <FaRegHeart size={28} className="text-[#FF6F61]" />
           </div>
           <h3 className="font-semibold text-[#333333] mb-3 text-lg">Community Standing</h3>
           <p className="text-sm text-[#666666] leading-relaxed">
@@ -295,7 +277,7 @@ const FullWidthProfilePage = () => {
 
         <div className="bg-white rounded-2xl shadow-sm p-8 text-center border border-gray-100 hover:shadow-md transition-shadow">
           <div className="w-16 h-16 bg-[#FFF6E5] rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag size={28} className="text-[#006D77]" />
+            <FiShoppingBag size={28} className="text-[#006D77]" />
           </div>
           <h3 className="font-semibold text-[#333333] mb-3 text-lg">Purchase History</h3>
           <p className="text-sm text-[#666666] leading-relaxed">
@@ -319,19 +301,19 @@ const FullWidthProfilePage = () => {
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#006D77] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <Check size={14} className="text-white" />
+                <FiCheck size={14} className="text-white" />
               </div>
               <p className="text-[#666666]">Secure payment protection on all transactions</p>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#006D77] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <Check size={14} className="text-white" />
+                <FiCheck size={14} className="text-white" />
               </div>
               <p className="text-[#666666]">Identity verification for enhanced security</p>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-6 h-6 bg-[#006D77] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <Check size={14} className="text-white" />
+                <FiCheck size={14} className="text-white" />
               </div>
               <p className="text-[#666666]">Community feedback system for accountability</p>
             </div>
@@ -340,7 +322,7 @@ const FullWidthProfilePage = () => {
         
         <div className="bg-gradient-to-br from-[#FFF6E5] to-[#FF6F61]/10 rounded-2xl p-8 border-l-4 border-[#FF6F61]">
           <div className="text-[#333333]">
-            <Quote size={32} className="text-[#FF6F61] mb-4" />
+            <IoIosQuote size={32} className="text-[#FF6F61] mb-4" />
             <p className="text-lg italic leading-relaxed mb-6">
               "Trust is built through consistent actions and respectful communication. 
               Our community thrives when members engage authentically and responsibly."
@@ -375,14 +357,14 @@ const FullWidthProfilePage = () => {
                 className="md:hidden p-2 rounded-md text-gray-600"
                 onClick={() => setIsSidebarOpen(true)}
               >
-                <Menu size={24} />
+                <FiMenu size={24} />
               </button>
               <h1 className="text-xl font-bold text-[#333333] ml-2">Marketplace</h1>
             </div>
             
             <div className="hidden md:block flex-1 max-w-xl mx-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 <input
                   type="text"
                   placeholder="Search products, brands, and categories..."
@@ -393,7 +375,7 @@ const FullWidthProfilePage = () => {
             
             <div className="flex items-center space-x-4">
               <button className="p-2 rounded-md text-gray-600 hover:bg-gray-100 relative">
-                <Bell size={20} />
+                <FiBell size={20} />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </button>
               <div className="flex items-center space-x-2 cursor-pointer">
@@ -431,7 +413,7 @@ const FullWidthProfilePage = () => {
           <h1 className="text-2xl font-bold text-[#333333]">{userData.name}</h1>
           {userData.isVerified && (
             <span className="bg-[#006D77] text-white p-1 rounded-full">
-              <CheckCircle size={16} />
+              <FiCheckCircle size={16} />
             </span>
           )}
         </div>
@@ -439,7 +421,7 @@ const FullWidthProfilePage = () => {
         {userData.isOwnProfile && (
           <div className="flex justify-center md:ml-auto">
             <button className="bg-[#FFF6E5] text-[#FF6F61] px-4 py-1 rounded-lg font-medium hover:bg-[#FF6F61] hover:text-white transition-colors flex items-center gap-2 text-sm md:text-base">
-              <Edit size={14} />
+              <FiEdit size={14} />
               Edit Profile
             </button>
           </div>
@@ -452,11 +434,11 @@ const FullWidthProfilePage = () => {
       {/* Location + Join Date */}
       <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-2 text-[#666666] text-sm mb-4">
         <span className="flex items-center justify-center gap-1">
-          <MapPin size={14} />
+          <FaMapPin size={14} />
           {userData.location}
         </span>
         <span className="flex items-center justify-center gap-1">
-          <Calendar size={14} />
+          <FiCalendar size={14} />
           Joined {userData.joinDate}
         </span>
       </div>
@@ -464,16 +446,17 @@ const FullWidthProfilePage = () => {
       {/* Buttons */}
       <div className="flex flex-col md:flex-row flex-wrap gap-3">
         <button className="w-full md:w-auto bg-[#FF6F61] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#e55a50] transition-colors flex items-center justify-center gap-2">
-          <MessageSquare size={16} />
+          <FaRegMessage  size={16} />
+          {/* Remain */}
           Message Seller
         </button>
         <button className="w-full md:w-auto bg-white text-[#333333] border border-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-          <Eye size={16} />
+          <FiEye size={16} />
           View Listings
         </button>
         {userData.isOwnProfile && (
           <button className="w-full md:w-auto bg-white text-[#333333] border border-gray-300 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
-            <Heart size={16} />
+            <FiHeart size={16} />
             My Favorites
           </button>
         )}
@@ -493,7 +476,7 @@ const FullWidthProfilePage = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
                   <div className="w-10 h-10 bg-[#FF6F61] rounded-full flex items-center justify-center text-white">
-                    <Star size={20} />
+                    <FiStar size={20} />
                   </div>
                   <div>
                     <p className="text-sm text-[#666666]">Average Rating</p>
@@ -506,7 +489,7 @@ const FullWidthProfilePage = () => {
                 
                 <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
                   <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white">
-                    <CheckCircle size={20} />
+                    <IoMdCheckmarkCircle size={20} />
                   </div>
                   <div>
                     <p className="text-sm text-[#666666]">Confirmed Sales</p>
@@ -516,7 +499,7 @@ const FullWidthProfilePage = () => {
                 
                 <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
                   <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white">
-                    <AlertTriangle size={20} />
+                    <FiAlertTriangle size={20} />
                   </div>
                   <div>
                     <p className="text-sm text-[#666666]">Disputes</p>
@@ -526,7 +509,7 @@ const FullWidthProfilePage = () => {
                 
                 <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
                   <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center text-white">
-                    <XCircle size={20} />
+                    <FiXCircle size={20} />
                   </div>
                   <div>
                     <p className="text-sm text-[#666666]">Ignored Buyers</p>
@@ -541,15 +524,15 @@ const FullWidthProfilePage = () => {
                 <h2 className="text-xl font-bold text-[#333333] mb-4">Quick Actions</h2>
                 <div className="space-y-3">
                   <button className="w-full flex items-center gap-3 p-3 text-[#333333] hover:bg-[#FFF6E5] rounded-xl transition-colors">
-                    <ShoppingBag size={20} />
+                    <FaShoppingBag size={20} />
                     <span>My Purchases</span>
                   </button>
                   <button className="w-full flex items-center gap-3 p-3 text-[#333333] hover:bg-[#FFF6E5] rounded-xl transition-colors">
-                    <Heart size={20} />
+                    <FiHeart size={20} />
                     <span>My Favorites</span>
                   </button>
                   <button className="w-full flex items-center gap-3 p-3 text-[#333333] hover:bg-[#FFF6E5] rounded-xl transition-colors">
-                    <Edit size={20} />
+                    <FiEdit3 size={20} />
                     <span>Edit Profile</span>
                   </button>
                 </div>
@@ -614,7 +597,7 @@ const FullWidthProfilePage = () => {
                         <p className="font-bold text-[#333333] text-lg mb-2">{item.price}</p>
                         <div className="flex justify-between items-center text-sm text-[#666666]">
                           <span className="flex items-center">
-                            <Eye size={14} className="mr-1" />
+                            <FiEye size={14} className="mr-1" />
                             {item.views} views
                           </span>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -637,7 +620,7 @@ const FullWidthProfilePage = () => {
                         onClick={() => setShowAllListings(!showAllListings)}
                       >
                         {showAllListings ? 'Hide' : 'Show'} Past Listings
-                        {showAllListings ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                        {showAllListings ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
                       </button>
                     </div>
                     
@@ -710,7 +693,7 @@ const FullWidthProfilePage = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                     <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
-                      <MapPin size={20} className="text-[#FF6F61]" />
+                      <MdLocalShipping size={20} className="text-[#FF6F61]" />
                       <div>
                         <p className="text-sm text-[#666666]">Location</p>
                         <p className="font-medium text-[#333333]">{userData.location}</p>
@@ -718,7 +701,7 @@ const FullWidthProfilePage = () => {
                     </div>
                     
                     <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
-                      <Calendar size={20} className="text-[#FF6F61]" />
+                      <FiCalendar size={20} className="text-[#FF6F61]" />
                       <div>
                         <p className="text-sm text-[#666666]">Member Since</p>
                         <p className="font-medium text-[#333333]">{userData.joinDate}</p>
@@ -726,7 +709,8 @@ const FullWidthProfilePage = () => {
                     </div>
                     
                     <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
-                      <MessageSquare size={20} className="text-[#FF6F61]" />
+                      <FiMessageSquare size={20} className="text-[#FF6F61]" />
+                      {/* remain */}
                       <div>
                         <p className="text-sm text-[#666666]">Response Rate</p>
                         <p className="font-medium text-[#333333]">{userData.stats.responseRate}</p>
@@ -734,7 +718,7 @@ const FullWidthProfilePage = () => {
                     </div>
                     
                     <div className="flex items-center gap-3 p-3 bg-[#FFF6E5] rounded-xl">
-                      <Eye size={20} className="text-[#FF6F61]" />
+                      <FiEye size={20} className="text-[#FF6F61]" />
                       <div>
                         <p className="text-sm text-[#666666]">Response Time</p>
                         <p className="font-medium text-[#333333]">{userData.stats.responseTime}</p>
@@ -767,19 +751,20 @@ const FullWidthProfilePage = () => {
             </div>
             <nav className="p-4 space-y-2">
               <a href="#" className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100">
-                <User size={20} />
+                <FaUser size={20} />
                 <span>Profile</span>
               </a>
               <a href="#" className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100">
-                <ShoppingBag size={20} />
+                <FiShoppingBag size={20} />
                 <span>Purchases</span>
               </a>
               <a href="#" className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100">
-                <Heart size={20} />
+                <FiHeart size={20} />
                 <span>Favorites</span>
               </a>
               <a href="#" className="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-gray-100">
-                <MessageSquare size={20} />
+                <FaRegMessage  size={20} />
+             
                 <span>Messages</span>
               </a>
             </nav>
