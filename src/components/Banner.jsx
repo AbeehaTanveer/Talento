@@ -68,7 +68,7 @@ const HeroBanner = () => {
           whileTap={{ scale: 0.97 }}
           className="px-6 sm:px-7 py-3 sm:py-3.5 bg-gradient-to-r from-[#006D77] to-[#008891] text-white rounded-xl font-semibold shadow-lg flex items-center justify-center gap-2"
           >
-            Daily Streak <FiArrowRight />
+           Start Journey <FiArrowRight />
           </motion.button>
             {/* </Link> */}
           

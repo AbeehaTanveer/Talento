@@ -126,7 +126,7 @@ const RegisterPage = () => {
                 <div>
              <h4 className="font-medium text-gray-900 mb-2">Secure & Private</h4>
                        <p className="text-gray-600 text-sm">
-                    Your information is encrypted and never shared. We prioritize your privacy and security.
+                    Your information is encrypted and never shared. 
                   </p>
                 </div>
               </div>
@@ -188,6 +188,7 @@ const RegisterPage = () => {
                     </div>
                   </div>
 
+
                   {/* University Field */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -202,13 +203,32 @@ const RegisterPage = () => {
                     >
                       <option value="">Select your university</option>
                       <option value="LCWU">Lahore College for Women University</option>
-                      <option value="PU">University of the Punjab</option>
+                      {/* <option value="PU">University of the Punjab</option>
                       <option value="UET">University of Engineering and Technology</option>
                       <option value="LUMS">Lahore University of Management Sciences</option>
-                      <option value="Other">Other University</option>
+                      <option value="Other">Other University</option> */}
                     </select>
                   </div>
                 </div>
+
+      {/* Location Field */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Location *
+        </label>
+        <select
+          name="location"
+          value={formData.location}
+          onChange={handleInputChange}
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#006D77] focus:border-transparent transition-all duration-200"
+          required
+        >
+          <option value="">Select your location</option>
+          <option value="Lahore">Lahore</option>
+          {/* <option value="Islamabad">Islamabad</option>
+          <option value="Karachi">Karachi</option> */}
+        </select>
+      </div>
 
                 {/* Email Field */}
                 <div>

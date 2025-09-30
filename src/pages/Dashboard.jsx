@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { RiAwardLine, RiTrophyLine } from "react-icons/ri";
 
 
+
+
 import {
   FiShoppingBag,
   FiPackage,
@@ -64,6 +66,16 @@ const Dashboard = () => {
     { goal: "Monthly Sales Target", progress: 45, target: 50 },
     { goal: "Response Rate", progress: 95, target: 100 }
   ];
+
+
+// Add this state to your component
+const [verificationStatus, setVerificationStatus] = useState('verified'); // 'verified', 'pending', 'rejected', 'unverified'
+
+// Example of how to change status (you can connect this to your backend)
+// setVerificationStatus('pending');
+// setVerificationStatus('verified');
+// setVerificationStatus('rejected');
+// setVerificationStatus('unverified');
 
 const stats = [
   { 
@@ -359,89 +371,119 @@ const DashboardContent = () => (
   return (
  <div className="min-h-screen bg-gray-50 mt-16">
   {/* Header with Notification Badges */}
-  <header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
-    <div className="px-6 py-8">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        {/* Profile */}
-        <div className="flex items-center gap-4">
-          <div className="relative">
-            <img
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1887&q=80"
-              alt="Sarah Johnson"
-              className="w-12 h-12 rounded-xl object-cover border-2 border-gray-900 shadow-sm"
-            />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center border-2 border-white">
-              <HiSparkles  size={10} className="text-white" />
-            </div>
+<header className="bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm">
+  <div className="px-6 py-8">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Profile */}
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <img
+            src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1887&q=80"
+            alt="Sarah Johnson"
+            className="w-12 h-12 rounded-xl object-cover border-2 border-gray-900 shadow-sm"
+          />
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-900 rounded-full flex items-center justify-center border-2 border-white">
+            <HiSparkles size={10} className="text-white" />
           </div>
-          <div>
+        </div>
+        <div>
+          <div className="flex items-center gap-2">
             <h1 className="text-xl font-medium text-gray-900">
               Sarah Johnson
             </h1>
-            <div className="flex items-center">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <FiStar
-                  key={star}
-                  size={12}
-                  className={`${
-                    star <= 4
-                      ? "text-amber-400 fill-amber-400"
-                      : "text-gray-300"
-                  } mr-1`}
-                />
-              ))}
-              <span className="text-sm text-gray-500 ml-1">(4.8)</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Search + Notification */}
-        <div className="flex items-center gap-4 w-full sm:w-auto">
-          <div className="relative flex-1 sm:flex-none">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FiSearch className="text-gray-400" size={18} />
-            </div>
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={() => setIsSearchFocused(true)}
-              onBlur={() => setIsSearchFocused(false)}
-              className={`pl-10 pr-4 py-2.5 bg-gray-100 border rounded-xl 
-                          focus:ring-2 focus:ring-gray-900 focus:border-gray-900 
-                          outline-none transition-all w-full sm:w-64 ${
-                            isSearchFocused ? 'border-gray-900' : 'border-transparent'
-                          }`}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    {/* Tabs */}
-    <div className="px-6 pb-1 mb-3.5">
-      <div className="flex flex-wrap gap-2">
-        {navItems.map((item) => (
-          <motion.button
-            key={item.id}
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setActiveTab(item.id)}
-            className={`flex items-center px-4 py-2 rounded-xl transition-all duration-200 relative ${
-              activeTab === item.id
-                ? "bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-md"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-            }`}
-          >
-            <span className="mr-2">{item.icon}</span>
-            <span className="font-medium whitespace-nowrap text-sm">
-              {item.label}
+            {/* Verification Status Badge */}
+            <span className={`px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1
+              ${verificationStatus === 'verified' ? 'bg-green-100 text-green-800' : 
+                verificationStatus === 'pending' ? 'bg-amber-100 text-amber-800' :
+                verificationStatus === 'rejected' ? 'bg-red-100 text-red-800' :
+                'bg-gray-100 text-gray-800'}`}>
+              {verificationStatus === 'verified' ? (
+                <>
+                  <FiCheckCircle size={12} className="fill-green-500 text-white" />
+                  Verified
+                </>
+              ) : verificationStatus === 'pending' ? (
+                <>
+                  <FiClock size={12} />
+                  Pending
+                </>
+              ) : verificationStatus === 'rejected' ? (
+                <>
+                  <FiXCircle size={12} />
+                  Rejected
+                </>
+              ) : (
+                <>
+                  <FiUser size={12} />
+                  Unverified
+                </>
+              )}
             </span>
-          </motion.button>
-        ))}
+          </div>
+          <div className="flex items-center mt-1">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <FiStar
+                key={star}
+                size={12}
+                className={`${
+                  star <= 4
+                    ? "text-amber-400 fill-amber-400"
+                    : "text-gray-300"
+                } mr-1`}
+              />
+            ))}
+            <span className="text-sm text-gray-500 ml-1">(4.8)</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Search + Notification */}
+      <div className="flex items-center gap-4 w-full sm:w-auto">
+        <div className="relative flex-1 sm:flex-none">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <FiSearch className="text-gray-400" size={18} />
+          </div>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+            className={`pl-10 pr-4 py-2.5 bg-gray-100 border rounded-xl 
+                        focus:ring-2 focus:ring-gray-900 focus:border-gray-900 
+                        outline-none transition-all w-full sm:w-64 ${
+                          isSearchFocused ? 'border-gray-900' : 'border-transparent'
+                        }`}
+          />
+        </div>
       </div>
     </div>
-  </header>
+  </div>
+  {/* Tabs */}
+  <div className="px-6 pb-1 mb-3.5">
+    <div className="flex flex-wrap gap-2">
+      {navItems.map((item) => (
+        <motion.button
+          key={item.id}
+          whileHover={{ y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setActiveTab(item.id)}
+          className={`flex items-center px-4 py-2 rounded-xl transition-all duration-200 relative ${
+            activeTab === item.id
+              ? "bg-gradient-to-br from-teal-400 to-teal-600 text-white shadow-md"
+              : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          }`}
+        >
+          <span className="mr-2">{item.icon}</span>
+          <span className="font-medium whitespace-nowrap text-sm">
+            {item.label}
+          </span>
+        </motion.button>
+      ))}
+    </div>
+  </div>
+</header>
 
   {/* Main Content Area */}
   <main className="p-6">

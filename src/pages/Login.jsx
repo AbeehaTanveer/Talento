@@ -43,7 +43,7 @@ const FuturisticLogin = () => {
             transition={{ duration: 0.8 }}
             className="text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">Welcome to Talanto</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">Welcome to Flick</h2>
             <p className="text-lg opacity-90">Where future commerce meets human connection</p>
           </motion.div>
         </div>
