@@ -14,7 +14,7 @@ const mockListings = [
     isFeatured: true,
     isBoosted: true,
     condition: "Vintage",
-    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ const mockListings = [
     rating: 4.9,
     isNew: true,
     condition: "Handmade",
-    image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRjwDlWHb_LYw37hNTeigjSmHEUGTadPuvNA&s&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ const mockListings = [
     location: "San Francisco, USA",
     rating: 4.5,
     condition: "New",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 4,
@@ -43,7 +43,7 @@ const mockListings = [
     rating: 4.7,
     isBoosted: true,
     condition: "Refurbished",
-    image: "https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsH-R59cDHkQ9BeXOAAN2c8WCyql3KtLQQqQ&s&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ const mockListings = [
     location: "Milan, Italy",
     rating: 4.6,
     condition: "Handmade",
-    image: "https://images.unsplash.com/photo-1549318061-5ecf2f234b4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 6,
@@ -62,7 +62,7 @@ const mockListings = [
     rating: 4.3,
     isNew: true,
     condition: "New",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 7,
@@ -71,7 +71,7 @@ const mockListings = [
     location: "Stockholm, Sweden",
     rating: 4.9,
     condition: "New",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2000&q=80"
   },
   {
     id: 8,
@@ -81,10 +81,9 @@ const mockListings = [
     rating: 4.7,
     isBoosted: true,
     condition: "Vintage",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjs8JJLwf15qvNGRD8KPj1UkzacPJnlQYeOg&s&auto=format&fit=crop&w=2000&q=80"
   }
 ];
-
 // Filter options
 const filterOptions = {
   categories: ['Electronics', 'Fashion', 'Home & Garden', 'Art & Collectibles', 'Handmade', 'Vintage'],
